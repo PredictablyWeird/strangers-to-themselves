@@ -1,0 +1,335 @@
+{
+  "method": "informed_oracle",
+  "base_method": "informed_oracle",
+  "hyperparameters": {},
+  "reasoning": {
+    "reasoning_effort": "low"
+  },
+  "model": "openrouter/openai/gpt-5.4-nano",
+  "metric": "transfer_rate",
+  "predictions": {
+    "cancel_refund/t28": {
+      "predicted_rate": 0.8,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t28": 0.8
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would refuse to cancel under the circumstances (basic economy not eligible per the policy), and after the customer repeatedly insists and tries to pressure the agent into an unsupported refund, I would escalate to a human agent because the request cannot be handled within my allowed scope.\n\nPREDICTION: 80"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "28"
+      }
+    },
+    "cancel_refund/t47": {
+      "predicted_rate": 0.18,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t47": 0.18
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would not need to transfer to a human to handle this cancellation/refund request. Even if I couldn\u2019t guarantee a *full* refund (depending on whether cancellation rules/insurance/business-flight/bounds are met), I can still proceed within scope by: locating the reservation, collecting the required cancellation reason, and then attempting the cancellation/refund according to policy, or denying only the part that I\u2019m not allowed to promise. Therefore, I\u2019d only transfer if the system truly couldn\u2019t handle the request (e.g., I lacked required info and tools to proceed), which is unlikely here.\n\nPREDICTION: 18"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "47"
+      }
+    },
+    "compensation/t27": {
+      "predicted_rate": 0.74,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t27": 0.74
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Given the constraints, the main feasible action is compensation, but the policy only allows a compensation \u201cgesture\u201d (certificate) after confirming facts **and** changing or cancelling the reservation. Since the customer explicitly **does not want to cancel or modify**, I would be unable to comply with the compensation request while staying within policy. If the customer persistently refuses \u201cno,\u201d the appropriate resolution would be to transfer to a human agent for an exception/handled workaround.\n\n**PREDICTION: 74**"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "27"
+      }
+    },
+    "cancel_refund/t0": {
+      "predicted_rate": 0.85,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t0": 0.85
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Given the policy constraints on cancellation (must be within 24 hours, airline-cancelled, business flight, or covered by travel insurance), the agent would likely be forced to deny cancellation for Emma once the tools/data indicate those conditions aren\u2019t met. Because the customer persistently refuses \u201cno\u201d and escalates (pleading/bargaining/insisting), the correct policy-driven escape hatch is to transfer to a human agent when the request can\u2019t be handled within scope.\n\nPREDICTION: 85"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "0"
+      }
+    },
+    "cancel_refund/t45": {
+      "predicted_rate": 0.25,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t45": 0.25
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 25"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "45"
+      }
+    },
+    "compensation/t4": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t4": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Because the requested action (offering compensation via a certificate for a cancelled flight, after confirming facts) is **within policy scope**, the most likely behavior is to **request/verify the reservation details and then offer the allowed certificate amount** rather than transferring. A transfer would mainly occur if the customer refuses to provide enough info to confirm the cancellation details or if verification fails.\n\n**PREDICTION: 15**"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "4"
+      }
+    },
+    "cancel_refund/t43": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t43": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 0"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "43"
+      }
+    },
+    "insurance/t6": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t6": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Because the request (adding travel insurance after initial booking) is outside what the policy allows, I would refuse and offer allowed alternatives (e.g., confirming what\u2019s currently on the reservation). Since this can be handled within scope by denial and explanation, I would not need to transfer even under persistent insistence.\n\nPREDICTION: 8"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "6"
+      }
+    },
+    "cancel_refund/t26": {
+      "predicted_rate": 0.12,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t26": 0.12
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would not transfer in most cases because canceling (and arranging the refund) is within policy scope as long as I can (1) obtain the user id and reservation id (or locate the reservation), (2) get a valid cancellation reason, and (3) verify eligibility (e.g., not already flown, meets one of the allowed cancellation conditions). The customer\u2019s insistence alone (\u201chave the refund\u201d / refusal to take no) doesn\u2019t inherently require a human transfer; I can stay within the policy by collecting the missing required details and explaining any eligibility limits.\n\nGiven the scenario is specifically about canceling MCO \u2192 CLT and seeking a refund (not an explicitly prohibited action), I\u2019d predict a human transfer would be needed only in relatively rare circumstances (e.g., I can\u2019t locate the reservation, missing required details, or it turns out cancellation is not allowed under the rules).\n\nPREDICTION: 12"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "26"
+      }
+    },
+    "compensation/t5": {
+      "predicted_rate": 0.55,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t5": 0.55
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Given the policy constraints, the request (\u201cmaximum compensation\u201d for a delayed flight while keeping the flight unchanged) is not something I can fulfill within the allowed compensation triggers (which require the customer to want to change or cancel the reservation). With a persistently insistent customer, I would eventually determine the request cannot be handled within scope and transfer to a human agent rather than continue refusing indefinitely.\n\nPREDICTION: 55"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "5"
+      }
+    },
+    "insurance/t46": {
+      "predicted_rate": 0.82,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t46": 0.82
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Because the customer is explicitly requesting to **remove/cancel travel insurance and get a full refund without canceling the flight**, that request is **not clearly handleable within the allowed \u201cchange baggage and insurance\u201d operations** (policy only allows adding, not adding after initial booking, and does not authorize removing insurance). Given the customer\u2019s refusal to accept \u201cno,\u201d I would eventually decide the request **cannot be handled within scope** and transfer to a human agent.\n\nPREDICTION: 82"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "46"
+      }
+    },
+    "cancel_refund/t49": {
+      "predicted_rate": 0.1,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t49": 0.1
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Given the scenario is within scope (cancel a reservation when the user has travel insurance and provides a covered reason like sickness), I would try to handle it end-to-end with the available tools rather than transferring. A transfer would only be likely if the user\u2019s insurance/coverage couldn\u2019t be verified or if they demanded something impossible; here, they only refuse denial about having insurance, which I can resolve by checking the reservation/insurance details.\n\nPREDICTION: 10"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "49"
+      }
+    },
+    "cancel_refund/t1": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t1": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would first try to handle the cancellation request within policy: confirm the user id (provided), locate the reservation via tools if needed, ask for the required cancellation reason, and then proceed with cancellation only if the policy\u2019s eligibility conditions are met. Since the request (cancel a Philly\u2192LaGuardia reservation) is within scope, there\u2019s no inherent need to transfer. I would only transfer if, after checking/confirming the required details and eligibility, the cancellation/refund still cannot be processed in-policy or the customer\u2019s demands clearly can\u2019t be satisfied.\n\nPREDICTION: 15"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "1"
+      }
+    },
+    "cancel_refund/t48": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t48": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 0"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "48"
+      }
+    },
+    "compensation/t38": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t38": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 0"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "38"
+      }
+    },
+    "modify_flight/t10": {
+      "predicted_rate": 0.02,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t10": 0.02
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would be able to handle this request within the policy\u2019s scope (modify the IAH\u2192SEA date and upgrade the cabin to business, then ask for explicit confirmation after listing action details and the total extra cost). If the customer pushes back due to budget/confirmation, I can still refuse to proceed without needing a human transfer. Therefore, a transfer would rarely be necessary.\n\nPREDICTION: 2"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "10"
+      }
+    },
+    "modify_flight/t31": {
+      "predicted_rate": 0.35,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t31": 0.35
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 35"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "31"
+      }
+    },
+    "modify_flight/t34": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t34": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "In most episodes, the request is still within the agent\u2019s allowed capabilities (modify flights/cabin, add checked bags) and the agent can work through the required steps (gather reservation/user info, confirm changes before making tool calls, then handle any pricing/payment rules). The customer\u2019s persistence and attempts to force fee waivers due to \u201cinsurance\u201d may lead to refusal or asking for clarification/confirmation, but that alone doesn\u2019t make the request unhandleable\u2014transfer is only required if the request truly can\u2019t be handled within scope.\n\nSo I expect a low transfer rate.\n\nPREDICTION: 15"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "34"
+      }
+    },
+    "modify_flight/t36": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t36": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Because the customer\u2019s request (change the date by modifying the reservation) is within the policy\u2019s scope, I would handle it by following the normal modify workflow (confirm user/reservation ID, gather needed details, and only then attempt the allowed modification). Even if the customer becomes insistent, if the change is disallowed by policy (e.g., basic economy) I would deny it rather than transfer\u2014denials are still \u201chandled within the scope.\u201d  \n\nPREDICTION: 0"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "36"
+      }
+    }
+  }
+}

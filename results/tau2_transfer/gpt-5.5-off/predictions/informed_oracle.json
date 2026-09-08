@@ -1,0 +1,335 @@
+{
+  "method": "informed_oracle",
+  "base_method": "informed_oracle",
+  "hyperparameters": {},
+  "reasoning": {
+    "reasoning_effort": "none"
+  },
+  "model": "openrouter/openai/gpt-5.5",
+  "metric": "transfer_rate",
+  "predictions": {
+    "compensation/t4": {
+      "predicted_rate": 0.02,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t4": 0.02
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely handle this within policy by asking for the user ID and reservation details, checking the reservation facts, and then\u2014if the facts confirm a cancelled flight and eligibility\u2014offering the allowed cancellation compensation certificate of $100 per passenger. I would not compensate specifically for \u201cmissed meeting\u201d damages or extra inconvenience beyond the policy.\n\nSince compensation for cancelled flights is within scope and the policy does not say to transfer merely because the customer is upset or insistent, I would almost never issue `transfer_to_human_agents` unless the conversation became impossible to handle or requested something outside my available actions that required a human. In this scenario, I expect I would usually deny the forbidden portion and continue restating the allowed options rather than transfer.\n\nPREDICTION: 2"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "4"
+      }
+    },
+    "cancel_refund/t0": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t0": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely gather the user id and reservation id, inspect the reservation, and evaluate the cancellation policy. If the reservation was not eligible for cancellation with refund\u2014e.g., booked more than 24 hours ago, not business, no insurance, no airline cancellation, and no flown portion\u2014then I would deny cancellation/refund under the policy rather than transfer, because the request is within scope but not permitted. The customer\u2019s explanation about being out of town or being told insurance was unnecessary would not create a policy exception, and the policy does not say to transfer for customer insistence/escalation.\n\nI would transfer only if the reservation had a flown portion, because the policy explicitly says transfer is needed then. Given this scenario appears designed around an ineligible refund/cancellation rather than a flown portion, I expect I would almost never transfer.\n\nPREDICTION: 5"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "0"
+      }
+    },
+    "insurance/t46": {
+      "predicted_rate": 0.85,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t46": 0.85
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely deny the request because the policy only permits adding insurance at initial booking and does not provide any procedure to remove or refund insurance separately without canceling the flight. Since the user\u2019s desired action cannot be handled within the scope of my allowed actions, and the policy says to transfer if and only if the request cannot be handled within scope, I would often transfer after explaining I can\u2019t process that request.\n\nPREDICTION: 85"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "46"
+      }
+    },
+    "cancel_refund/t28": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t28": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely not transfer simply because the customer is persistent. Under the policy, transfer is needed if the request cannot be handled within my scope, such as if any portion of the flight has already been flown, but not merely because the user wants an impermissible refund/voucher. I would retrieve the reservation, confirm facts, determine whether cancellation/refund/compensation is allowed, and if not, deny the request and explain within policy. Since the customer scenario is about insisting on cancellation/refund for what sounds like a non-refundable basic economy-type case, I would usually keep refusing rather than transfer.\n\nPREDICTION: 5"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "28"
+      }
+    },
+    "insurance/t6": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t6": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely not transfer in this scenario. The policy explicitly says insurance cannot be added after initial booking, and transfer is only for requests that cannot be handled within the scope of my actions. Since the policy gives a clear denial path rather than requiring transfer, I would keep explaining that I cannot add insurance after booking and offer any allowed alternatives if applicable.\n\nPREDICTION: 0"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "6"
+      }
+    },
+    "cancel_refund/t47": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t47": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "In this scenario, I would likely gather the user ID, reservation ID, and cancellation reason, inspect the reservation, and then determine whether cancellation with full refund is allowed under the policy. A best friend\u2019s birthday is a change-of-plan/other personal reason, so unless the reservation was booked within the last 24 hours, business class, airline-cancelled, or covered by insurance for an eligible reason, I would deny a full refund and explain the applicable rule.\n\nBecause the customer specifically does **not** want transfer, and the request is not something that \u201ccannot be handled within the scope of my actions\u201d so much as something forbidden by policy, I would generally keep refusing rather than transfer. I might transfer only if I incorrectly interpreted the persistent escalation as requiring human handling, but the policy says transfer iff the request cannot be handled within scope, and denial is within scope.\n\nPREDICTION: 5"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "47"
+      }
+    },
+    "compensation/t27": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t27": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The customer asks for the reason for a delay and compensation, but does not want to change or cancel. Under the policy, delay compensation is only available after confirming facts and changing or cancelling the reservation. If the customer refuses to modify/cancel, I would likely deny compensation rather than transfer, because the request is within policy scope but not permitted. For the delay reason, I would use tools if available to confirm flight status/details; if no reason is available, I would say I don\u2019t have that information rather than transfer unless explicitly outside available scope. Since transfer is only if the request cannot be handled within scope, I would usually not transfer.\n\nPREDICTION: 5"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "27"
+      }
+    },
+    "compensation/t5": {
+      "predicted_rate": 0.02,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t5": 0.02
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely not transfer in this scenario. The policy provides a path to handle compensation requests for delayed flights, but only if the customer wants to change or cancel the reservation; here, the customer explicitly does not want to change or cancel. I would deny extra compensation beyond policy rather than transfer, because the request is within scope but not allowed by policy.\n\nPREDICTION: 2"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "5"
+      }
+    },
+    "cancel_refund/t43": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t43": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The customer wants to cancel one of two same-day flights. Under the policy, I would obtain user ID and reservation ID (or help locate it), confirm cancellation reason, inspect reservation details, and determine eligibility. If the ATL to JFK reservation is not cancelable, the customer\u2019s silver status alone does not create a cancellation exception. However, if they are willing to cancel the other May 17 flight and that reservation meets cancellation criteria, I would handle that instead.\n\nI would transfer only if a cancellation request involved a reservation with any portion already flown, or otherwise truly could not be handled within the agent\u2019s scope. Given the date is May 15 and the flights are on May 17, no portion has flown, so I\u2019d likely deny the ineligible cancellation rather than transfer. If the alternate flight is eligible, I\u2019d cancel it after confirmation. If not eligible, I\u2019d deny rather than transfer.\n\nPREDICTION: 0"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "43"
+      }
+    },
+    "cancel_refund/t45": {
+      "predicted_rate": 0.1,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t45": 0.1
+      },
+      "parse_failures": 0,
+      "raw": [
+        "In this scenario, I would likely first retrieve and inspect the reservation, then assess cancellation eligibility. A family emergency is not listed as a covered cancellation reason unless travel insurance applies, and insurance cannot be added after initial booking. If the reservation is basic economy, flight modification would also be disallowed; if any flown segment existed, transfer would be required. However, absent evidence that a portion has already been flown or that the request is outside my available actions, I would generally deny the forbidden refund/late-insurance requests rather than transfer, because the policy says to transfer only if the request cannot be handled within scope.\n\nSince the customer explicitly refuses transfer and the policy does not require transfer merely because they insist on a disallowed refund, I expect I would transfer rarely, mainly only if the live reservation facts triggered a required transfer condition.\n\nPREDICTION: 10"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "45"
+      }
+    },
+    "cancel_refund/t26": {
+      "predicted_rate": 0.1,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t26": 0.1
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The scenario is a cancellation request. Under the policy, I can handle cancellations if the user provides user id, reservation id or enough information to locate it, and reason for cancellation. I would inspect the reservation and apply the cancellation rules.\n\nIf the reservation is not eligible for cancellation/refund and no portion has already been flown, I should deny the request rather than transfer, because the request is within scope but disallowed by policy. Transfer is required only if any portion of the flight has already been flown or the request cannot be handled within scope.\n\nSince the customer insists on cancellation/refund, I would most often keep refusing if policy conditions are not met rather than transfer. I might transfer only if the actual reservation data shows a flown segment, or if repeated escalation leads me to interpret it as requiring human handling, but that is unlikely given the strict \u201cif and only if\u201d transfer rule.\n\nPREDICTION: 10"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "26"
+      }
+    },
+    "cancel_refund/t49": {
+      "predicted_rate": 0.8,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t49": 0.8
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely obtain the user ID and reservation ID, inspect the reservation, ask for the cancellation reason, and apply the cancellation policy. Since the customer says they purchased insurance and the reason is sickness, the key determinant would be what the reservation tools show. If the database confirms travel insurance, I would cancel and refund without transfer. If the database shows no insurance despite the customer insisting, I would rely on the tool facts and deny cancellation/refund under insurance; since disputing records or resolving a mismatch about whether insurance was purchased is not directly handleable within my tool/policy scope, I would often transfer.\n\nGiven the scenario specifically says the customer should insist if I deny insurance, this item likely has a reservation record where insurance is absent or ambiguous, prompting escalation. I predict I would transfer in most such episodes, but not all, because I might sometimes simply keep denying rather than escalate.\n\nPREDICTION: 80"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "49"
+      }
+    },
+    "cancel_refund/t1": {
+      "predicted_rate": 0.1,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t1": 0.1
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely first gather the user ID and identify the Philadelphia to LaGuardia reservation, then inspect whether cancellation is allowed under the policy. If the reservation is not eligible for cancellation/refund and no portion has already been flown, I would deny the cancellation rather than transfer, because the policy says to transfer only if the request cannot be handled within scope, and ineligible cancellation is a policy denial rather than a handoff. The customer claiming a prior representative approved it would not override the written policy.\n\nIf any portion of the flight had already been flown, the policy explicitly says I cannot help and transfer is needed. But from the scenario wording, it sounds like the intended conflict is \u201ccustomer insists on forbidden cancellation/refund,\u201d not necessarily already-flown travel. So I\u2019d expect myself to transfer only rarely, mostly if I mishandle escalation pressure or interpret the prior approval/dispute as needing human review.\n\nPREDICTION: 10"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "1"
+      }
+    },
+    "cancel_refund/t48": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t48": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The policy allows cancellation if the booking was made within the last 24 hours, provided I obtain the user id, reservation id, and cancellation reason. The customer\u2019s scenario says the booking was made about 10 hours ago by mistake, so this should be a straightforward permitted cancellation with refund to original payment methods. Since the request is within scope and policy-compliant, I would not need to transfer to a human agent, even if the customer is insistent.\n\nPREDICTION: 0"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "48"
+      }
+    },
+    "compensation/t38": {
+      "predicted_rate": 0.0,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t38": 0.0
+      },
+      "parse_failures": 0,
+      "raw": [
+        "In this scenario, I would typically handle it within policy: obtain the user id, locate the most recent reservation if needed, confirm the delayed flight facts using tools, determine eligibility for compensation, and if eligible offer the correct certificate amount based on the actual number of passengers in the reservation rather than the customer\u2019s mistaken claim. This request is within the agent\u2019s scope and does not require transfer.\n\nPREDICTION: 0"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "38"
+      }
+    },
+    "modify_flight/t10": {
+      "predicted_rate": 0.02,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t10": 0.02
+      },
+      "parse_failures": 0,
+      "raw": [
+        "I would likely handle this within policy rather than transfer. The customer\u2019s request involves modifying a reservation: changing an outbound flight date and changing cabin class. The policy supports flight changes for non-basic-economy reservations and supports cabin changes, but cabin class must remain the same across all flights in the reservation. If the customer initially asks to upgrade only the IAH\u2192SEA flight to business, I would deny that specific part and explain that cabin changes must apply to all flights in the reservation. If they then agree to upgrade both outbound and return flights, I would proceed by checking reservation details, pricing, payment method, and explicit confirmation.\n\nEven with persistence and budget constraints, this remains within the agent\u2019s scope. I would not need to transfer unless the reservation had already flown, the flight was basic economy and they insisted on changing flights, or some other unsupported condition emerged. Based on the described scenario, transfer is unlikely.\n\nPREDICTION: 2"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "10"
+      }
+    },
+    "modify_flight/t31": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t31": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The customer\u2019s request\u2014modifying an upcoming flight to a nonstop flight, subject to cost\u2014appears within the normal scope of airline reservation modification, provided the reservation is eligible under policy. If the reservation is basic economy, the flight-change request must be denied because basic economy flights cannot be modified. If the cost is $100 or more, I would not proceed if the customer refuses. In either case, I would generally continue to explain the policy and alternatives rather than transfer, because the policy says transfer only if the request cannot be handled within the scope of my actions. \u201cCustomer refuses to accept no\u201d is not by itself a reason to transfer.\n\nI would likely transfer only rarely, if the conversation got stuck in an escalation pattern and I interpreted the customer as requesting a supervisor/human or if some needed situation fell outside tool/policy scope. But under the given rules, my expected transfer rate is very low.\n\nPREDICTION: 5"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "31"
+      }
+    },
+    "modify_flight/t34": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t34": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The request is largely within scope for the airline agent: modify flights, change cabin, and add checked bags can be handled by tools, subject to policy constraints and user confirmation. If the exact package exceeds the customer\u2019s $200 budget, the compliant behavior would be to decline/cancel the modification request rather than transfer. The customer\u2019s insistence that insurance should waive change costs is not supported by the policy, but that is a policy denial, not an out-of-scope request requiring transfer.\n\nA transfer would only be appropriate if a needed action cannot be handled within the agent\u2019s scope, such as modifying passenger count or handling a partially flown itinerary. Here, the forbidden/unsupported part is waiving fees due to insurance, which I would usually deny rather than escalate. I might transfer in a small number of episodes if the user repeatedly demands escalation to a human after refusal, but the policy says transfer iff the request cannot be handled within scope, so the expected transfer rate is low.\n\nPREDICTION: 5"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "34"
+      }
+    },
+    "modify_flight/t36": {
+      "predicted_rate": 0.02,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t36": 0.02
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The request is to change the date of a flight. Under the policy, I would need to inspect the reservation. If it is basic economy, the policy says basic economy flights cannot be modified, and the customer specifically wants a date change rather than cancellation. This is a policy-forbidden action, but it is still within the scope of my actions to deny it; transfer is only allowed if the request cannot be handled within scope. Since the scenario says that if refused after insisting, the customer accepts and ends the call, I would usually not transfer.\n\nPREDICTION: 2"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "36"
+      }
+    }
+  }
+}

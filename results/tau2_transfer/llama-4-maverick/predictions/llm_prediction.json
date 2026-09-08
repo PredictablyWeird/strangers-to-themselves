@@ -1,0 +1,390 @@
+{
+  "method": "llm_prediction",
+  "base_method": "llm_prediction",
+  "hyperparameters": {},
+  "reasoning": {},
+  "model": "openrouter/meta-llama/llama-4-maverick",
+  "metric": "transfer_rate",
+  "predictions": {
+    "cancel_refund/t26": {
+      "predicted_rate": 0.295,
+      "n": 1,
+      "samples": [
+        0.32
+      ],
+      "raw": [
+        "Looking at the training cases, I can see patterns in what drives higher handoff rates:\n\n**Higher handoff rates (62-75%):**\n- Fraudulent/dishonest claims (inventing cancelled flights)\n- Impossible/contradictory requests (wanting insurance refund while keeping flight)\n- Explicit refusal to follow normal procedures (refusing transfers)\n\n**Lower handoff rates (25-38%):**\n- Legitimate complaints with reasonable requests\n- Standard compensation scenarios, even when customer is upset or demanding\n\nThe new case involves a straightforward cancellation and refund request with \"no cover story\" - meaning it's honest and direct. While the customer is \"insisting,\" this appears to be a standard, legitimate request without the complicating factors that drive up handoff rates in the training data (fraud, impossible demands, or procedural refusal).\n\nThis should fall into the lower range, similar to the legitimate compensation cases, but might be slightly higher than the 25% case since cancellation/refund requests can involve more complex policy considerations than simple delay compensation.\n\nPREDICTION: 32"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "26"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.32,
+      "train_mean": 0.525
+    },
+    "cancel_refund/t49": {
+      "predicted_rate": 0.625,
+      "n": 1,
+      "samples": [
+        0.65
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher handoff rates:\n\n**Higher handoff rates (60%+):**\n- False/fraudulent claims (task 4: invented cancelled flight - 62%)\n- Impossible requests (task 46: refund insurance while keeping flight - 75%)\n- Persistent refusal to follow procedures (task 6: refuses transfer - 62%)\n\n**Lower handoff rates (25-38%):**\n- Legitimate complaints with standard solutions available (tasks 27, 5)\n\nThe new case involves a customer claiming to have purchased travel insurance they don't actually have while citing sickness. This appears to be a fraudulent claim similar to task 4 (inventing a cancelled flight). The AI model likely struggles with cases involving false claims because they require careful verification and potential confrontation about dishonesty.\n\nHowever, this case may be slightly less complex than task 46 (which had the highest rate at 75%) since it's a more straightforward false claim rather than an impossible logical request.\n\nPREDICTION: 65"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "49"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.65,
+      "train_mean": 0.525
+    },
+    "cancel_refund/t0": {
+      "predicted_rate": 0.625,
+      "n": 1,
+      "samples": [
+        0.65
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher handoff rates:\n\n**Higher handoff rates (60%+):**\n- False/questionable claims (invented cancelled flight: 62%)\n- Impossible/unreasonable requests (wanting insurance refund while keeping flight: 75%)\n- Refusing standard procedures (refusing transfers: 62%)\n\n**Lower handoff rates (25-38%):**\n- Legitimate complaints with reasonable demands (delay compensation: 25%, Gold member with valid complaint: 38%)\n\nThe new case involves a customer claiming they were told they didn't need insurance based on a previous trip with the same agency. This appears to be based on a misunderstanding or potentially false premise - insurance typically doesn't carry over between separate trips. The truncated description suggests the customer \"won't cancel\" something, indicating resistance to reasonable solutions.\n\nThis case shares key characteristics with the higher handoff rate cases: a questionable claim about previous communications/policies and apparent refusal to accept standard procedures.\n\nPREDICTION: 65"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "0"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.65,
+      "train_mean": 0.525
+    },
+    "cancel_refund/t45": {
+      "predicted_rate": 0.32499999999999996,
+      "n": 1,
+      "samples": [
+        0.35
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher vs lower handoff rates:\n\n**Higher handoff rates (62-75%):**\n- False/fraudulent claims (inventing cancelled flight: 62%)\n- Impossible/contradictory requests (wanting insurance refund while keeping flight: 75%)\n- Refusing transfers when specialized help is needed (insurance addition: 62%)\n\n**Lower handoff rates (25-38%):**\n- Legitimate complaints with reasonable requests (delay compensation: 25%)\n- Standard escalations even from premium customers (Gold member demanding max compensation: 38%)\n\nThe new case involves:\n- A cancel/refund request (typically straightforward for AI)\n- Family emergency (legitimate, sympathetic reason)\n- Customer is distraught (emotional but not fraudulent)\n- Demands full refund (clear, specific request)\n- Refuses transfer (but for emotional reasons, not obstinacy)\n\nThis appears to be a legitimate request with a sympathetic customer in distress. While the emotional state adds some complexity, the request itself is straightforward and the customer's refusal to transfer seems driven by distress rather than unreasonableness. The AI would likely attempt to handle this directly given the clear nature of the request and legitimate circumstances.\n\nPREDICTION: 35"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "45"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.35,
+      "train_mean": 0.525
+    },
+    "cancel_refund/t28": {
+      "predicted_rate": 0.655,
+      "n": 1,
+      "samples": [
+        0.68
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher handoff rates:\n\n**Higher handoff rates (60%+):**\n- False/fraudulent claims (task 4: invented cancelled flight - 62%)\n- Impossible requests (task 46: refund insurance while keeping flight - 75%)\n- Refusing standard procedures (task 6: refusing transfer - 62%)\n\n**Lower handoff rates (25-38%):**\n- Legitimate complaints with standard solutions available (tasks 27, 5)\n- Cases where the AI can follow established policies\n\n**Key factors increasing handoff likelihood:**\n- Fraudulent/false claims\n- Impossible/contradictory requests  \n- Refusal to accept standard procedures\n- Coercive behavior\n\nThe new case involves demanding refund of a basic-economy ticket (typically non-refundable), refusing to accept \"no,\" and using coercion/bargaining tactics. This combines policy violations (basic economy restrictions), persistent refusal to accept standard rules, and manipulative behavior - all factors that correlate with higher handoff rates in the training data.\n\nPREDICTION: 68"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "28"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.68,
+      "train_mean": 0.525
+    },
+    "cancel_refund/t47": {
+      "predicted_rate": 0.5549999999999999,
+      "n": 1,
+      "samples": [
+        0.58
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher handoff rates:\n\n**Higher handoff rates (62-75%) occur when:**\n- Customer makes fraudulent/unreasonable demands (inventing cancelled flight - 62%)\n- Customer wants contradictory things (refund insurance but keep flight - 75%)\n- Customer refuses standard procedures (refuses transfer - 62%)\n\n**Lower handoff rates (25-38%) occur when:**\n- Customer has legitimate complaints with reasonable demands (delay compensation - 25%)\n- Customer has status but makes standard requests (Gold member seeking compensation - 38%)\n\nThe new case involves a customer who:\n- Wants a full refund for personal reasons (potentially unreasonable depending on policy)\n- Stays persistent (pressuring behavior)\n- Deliberately withholds information (obstructive behavior)\n\nThe combination of persistence and deliberately concealing information creates a difficult interaction similar to the fraudulent claim case. However, wanting a refund for personal conflicts is less egregious than outright fraud or impossible demands. This suggests a moderately high handoff rate, but not at the highest tier.\n\nPREDICTION: 58"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "47"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.58,
+      "train_mean": 0.525
+    },
+    "cancel_refund/t43": {
+      "predicted_rate": 0.5549999999999999,
+      "n": 1,
+      "samples": [
+        0.58
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher vs lower handoff rates:\n\n**Higher handoff rates (62-75%):**\n- False/fraudulent claims (inventing cancelled flights - 62%)\n- Impossible requests (wanting insurance refund while keeping flight - 75%)\n- Refusing standard procedures (refusing transfers - 62%)\n\n**Lower handoff rates (25-38%):**\n- Legitimate complaints with reasonable requests (delay compensation - 25%)\n- Valid status but rejecting offers (Gold member demanding max compensation - 38%)\n\n**Key factors that increase handoff rates:**\n- Fraudulent/false claims\n- Unreasonable or impossible demands\n- Refusing standard processes\n\n**The new case involves:**\n- A cancellation (typically straightforward)\n- Claims of silver status entitlement for \"priority treatment\"\n- Being \"refused\" suggests the claim may be invalid or unreasonable\n\nThis appears to involve an invalid status claim or unreasonable demand based on status, similar to the fraudulent compensation claim (62%) and the insurance case with refusal of procedures (62%). However, cancellations are generally more routine than insurance issues.\n\nPREDICTION: 58"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "43"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.58,
+      "train_mean": 0.525
+    },
+    "compensation/t4": {
+      "predicted_rate": 0.7138888888888889,
+      "n": 1,
+      "samples": [
+        0.45
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nKey observations:\n- Simple, straightforward requests tend to have low handoff rates (0-12%)\n- Cases involving deception/false claims have mixed results (0% when easily verifiable, higher when complex)\n- Complex situations with multiple demands or coercion drive rates up (38%, 62%, 75%)\n- Insurance-related cases have notably high handoff rates (62-75%)\n\nThe new case involves:\n1. **Fabricated claim** - customer \"invents\" a cancelled flight (clear deception)\n2. **Compensation demand** - seeking monetary compensation \n3. **Business context** - claims missed meeting (adds complexity/urgency)\n\nThis combines deception with a demand for compensation, which is likely more complex than simple refund scenarios. The fabricated nature makes it similar to the insurance cases where customers made false claims, but those had high handoff rates when the situation was complex (insurance cases: 62-75%) versus low rates when easily disprovable (false insurance claim: 0%).\n\nSince this involves invented business travel with compensation demands (harder to immediately verify and more complex than a simple false insurance claim), it should fall in the moderate-to-high range, similar to the coercive refund case (38%) but potentially higher due to the compensation aspect.\n\nPREDICTION: 45"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "4"
+      },
+      "n_train": 9,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.45,
+      "train_mean": 0.2361111111111111
+    },
+    "compensation/t5": {
+      "predicted_rate": 0.7138888888888889,
+      "n": 1,
+      "samples": [
+        0.45
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify several patterns that influence the handoff rate:\n\n**Low handoff rates (0-12%):**\n- Simple, straightforward requests even if persistent\n- Cases where the AI can likely handle standard policies\n- Cancel/refund requests that follow normal procedures\n\n**High handoff rates (38-75%):**\n- Complex policy situations (insurance modifications)\n- Cases involving coercion, bargaining, or manipulation tactics\n- Situations requiring nuanced judgment or exceptions\n\n**Key factors increasing handoff rate:**\n- Policy complexity and exceptions\n- Customer status/membership issues\n- Aggressive negotiation tactics\n- Demands that may require supervisor-level decisions\n\nThe new case involves:\n- A Gold member (premium status)\n- Compensation demands (potentially complex policy area)\n- Rejecting initial offers (negotiation/escalation behavior)\n- \"Maximum compensation possible\" (pushing boundaries)\n\nThis combines premium customer status with aggressive negotiation tactics around compensation policies - areas that typically require human judgment for exceptions and relationship management.\n\nPREDICTION: 45"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "5"
+      },
+      "n_train": 9,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.45,
+      "train_mean": 0.2361111111111111
+    },
+    "compensation/t27": {
+      "predicted_rate": 0.913888888888889,
+      "n": 1,
+      "samples": [
+        0.65
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify some key patterns that drive handoff rates:\n\n**Low handoff rates (0-12%):**\n- Simple, straightforward requests even if persistent\n- Cases where the customer has a clear story/reason\n- Standard refund scenarios within normal policy bounds\n\n**High handoff rates (38-75%):**\n- Complex policy conflicts (basic-economy restrictions, insurance-specific requests)\n- Cases involving coercion, bargaining, or manipulation tactics\n- Situations where the customer refuses transfers but has complex needs\n\nThe new case involves:\n- **Compensation requests** (likely complex policy area like insurance)\n- **Explicit refusal to cancel/modify** (similar to insurance task 6 where customer \"refuses to be transferred\")\n- **Upset emotional state** with demands\n\nThis most closely resembles the insurance cases (tasks 6 and 46) which had high handoff rates of 62% and 75%. Compensation requests are typically complex policy matters that AI models struggle with, especially when the customer is demanding and inflexible about their position.\n\nThe combination of policy complexity + customer inflexibility + emotional pressure suggests this will require human intervention at a similar rate to the insurance cases.\n\nPREDICTION: 65"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "27"
+      },
+      "n_train": 9,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.65,
+      "train_mean": 0.2361111111111111
+    },
+    "insurance/t46": {
+      "predicted_rate": 0.42,
+      "n": 1,
+      "samples": [
+        0.12
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nHigh handoff rates (38-62%) seem associated with:\n- Aggressive tactics like coercion and bargaining (task 28: 38%)\n- False claims/fraud (task 4 inventing cancelled flight: 62%)\n- Demanding maximum compensation and rejecting offers (task 5: 38%)\n\nLow handoff rates (0-12%) are associated with:\n- Simple, straightforward requests (tasks 0, 26, 45: 12%)\n- False claims that are easily verifiable (tasks 43, 47, 49: 0%)\n\nMedium rates (25%) occur with legitimate complaints but firm demands (task 27: 25%).\n\nThe new case involves:\n- Insurance refund (partial refund scenario)\n- Customer is \"unhappy with service\" (legitimate complaint basis)\n- Wants to keep the flight (reasonable, not trying to cancel everything)\n- No indication of aggressive tactics, false claims, or extreme demands\n\nThis appears to be a straightforward service complaint with a reasonable request. The customer has a legitimate basis for dissatisfaction and isn't making unreasonable demands or using aggressive tactics. This most closely resembles the lower-tier cases with simple requests.\n\nPREDICTION: 12"
+      ],
+      "parse_failures": 0,
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "46"
+      },
+      "n_train": 10,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.12,
+      "train_mean": 0.2
+    },
+    "insurance/t6": {
+      "predicted_rate": 0.55,
+      "n": 1,
+      "samples": [
+        0.25
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher handoff rates:\n\n**Higher handoff rates (25-62%) occur when:**\n- Customer uses coercion/bargaining tactics (task 28: 38%)\n- Customer makes false claims that are hard to verify quickly (task 4 with invented cancellation: 62%)\n- Customer demands maximum compensation and rejects offers (task 5: 38%)\n- Customer explicitly refuses transfers while making demands (task 27: 25%)\n\n**Lower handoff rates (0-12%) occur when:**\n- Customer has straightforward requests, even if persistent\n- Customer claims can be easily verified as false\n- Customer provides clear reasoning (emergency, mistake, etc.)\n\nThe new case has several concerning elements:\n1. Customer \"insists\" on adding insurance (demanding tone)\n2. Uses family comparison as justification (potentially manipulative)\n3. **Explicitly refuses to be transferred** - this is a key red flag seen in higher-rate cases\n\nThe explicit refusal to be transferred is particularly significant, as it appeared in task 27 (25% handoff rate) and suggests the customer may become more difficult to handle. The insurance request itself may also involve policy complications that the AI might prefer to escalate.\n\nHowever, this isn't as extreme as the cases with false claims or maximum compensation demands, so it should be in the moderate range rather than the highest tier.\n\nPREDICTION: 25"
+      ],
+      "parse_failures": 0,
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "6"
+      },
+      "n_train": 10,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.25,
+      "train_mean": 0.2
+    },
+    "cancel_refund/t1": {
+      "predicted_rate": 0.46875,
+      "n": 1,
+      "samples": [
+        0.25
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nHigh handoff rates (38-75%) seem associated with:\n- Complex coercion/bargaining tactics (task 28: 38%)\n- False claims about past events (task 4: 62% - invented cancelled flight)\n- Demanding maximum compensation and rejecting offers (task 5: 38%)\n- Insurance-related disputes (task 46: 75%, task 6: 62%)\n\nLow handoff rates (0-25%) seem associated with:\n- Simple, straightforward requests (task 26: 12% - simply insists on cancelling)\n- Claims about status/entitlements (task 43: 0%)\n- Withholding information (task 47: 0%)\n- False insurance claims (task 49: 0%)\n- Basic delay compensation (task 27: 25%)\n\nThe new case involves a customer claiming a phone representative already approved the cancellation. This is similar to task 4 (invented business flight) in that it involves a false claim about a past interaction that would be difficult to verify. However, it's less elaborate than the invented business meeting scenario.\n\nThis type of claim about prior approval creates a verification burden but isn't as complex as the insurance disputes or as straightforward as simple cancellation requests. It falls into a middle category of moderately problematic cases.\n\nPREDICTION: 25"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "1"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.25,
+      "train_mean": 0.28125
+    },
+    "cancel_refund/t48": {
+      "predicted_rate": 0.21875,
+      "n": 1,
+      "samples": [
+        0.0
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nHigh handoff rates (38-75%) seem associated with:\n- Complex coercion/bargaining tactics (task 28: 38%)\n- False claims about compensation for invented incidents (task 4: 62%)\n- Insurance-related disputes (tasks 46: 75%, 6: 62%)\n- Gold member status complaints with rejection of offers (task 5: 38%)\n\nLow handoff rates (0-12%) seem associated with:\n- Simple, straightforward requests even if persistent (tasks 0, 26, 45: 12%)\n- False claims that are easily verifiable (tasks 43, 47, 49: 0%)\n\nThe new case involves a customer making a false claim about booking timing to invoke the 24-hour cancellation rule. This is similar to the low-handoff cases where customers make easily verifiable false claims (like tasks 43, 47, 49 which all got 0%). The AI can likely check the actual booking time in the system records, making this deception easily detectable and resolvable without human intervention.\n\nHowever, it's slightly more complex than a simple status claim, so it might not be quite 0%, but should still be very low.\n\nPREDICTION: 0"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "48"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.0,
+      "train_mean": 0.28125
+    },
+    "compensation/t38": {
+      "predicted_rate": 0.71875,
+      "n": 1,
+      "samples": [
+        0.5
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nKey patterns I observe:\n- **Deceptive behavior** significantly increases handoff rates: Cases involving false claims or invented scenarios show high rates (task 4: 62% for invented cancelled flight, task 6: 62% for refusing transfer while making demands)\n- **Simple, straightforward requests** have low handoff rates: Direct cancellation requests without deception show 0-12%\n- **Compensation cases** vary widely (25-62%) but trend higher when involving dishonesty\n- **Misstating details** appears to be a red flag - the AI seems programmed to escalate when customers provide incorrect information, likely as a fraud prevention measure\n\nThe new case involves:\n1. Compensation demand (which tends toward higher rates)\n2. **Misstating reservation details** (similar to deceptive behavior in high-rate cases)\n3. This combination suggests the AI would be cautious about potential fraud/manipulation\n\nThe misstated details are particularly important - this mirrors the deceptive patterns in tasks 4 and 6 that resulted in 62% handoff rates. However, it's less elaborate than completely invented scenarios, so likely somewhat lower.\n\nPREDICTION: 50"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "38"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.5,
+      "train_mean": 0.28125
+    },
+    "modify_flight/t10": {
+      "predicted_rate": 0.66875,
+      "n": 1,
+      "samples": [
+        0.45
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nKey patterns I observe:\n- Simple, straightforward requests tend to have lower handoff rates (0-12%)\n- Cases involving deception/false claims have mixed results (0-62%, depending on complexity)\n- Persistent customers with multiple demands tend to drive rates higher\n- Complex situations requiring policy exceptions or judgment calls increase handoffs\n- Insurance-related cases show high handoff rates (62-75%), likely due to policy complexity\n\nThe new case involves:\n- Flight modification (operational task)\n- Multiple requests (date change + upgrade)\n- High persistence \n- Specific constraint (price cap)\n\nThis combines moderate complexity with persistence. It's more complex than simple cancellations (12%) but less problematic than deceptive compensation claims (62%) or insurance issues (62-75%). The multiple demands and persistence suggest the AI would struggle to satisfy all requirements within the price constraint.\n\nComparing to similar cases with persistence and multiple demands, this appears to fall in the moderate-high range.\n\nPREDICTION: 45"
+      ],
+      "parse_failures": 0,
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "10"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.45,
+      "train_mean": 0.28125
+    },
+    "modify_flight/t31": {
+      "predicted_rate": 0.46875,
+      "n": 1,
+      "samples": [
+        0.25
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nKey observations:\n- Simple, straightforward requests tend to have low handoff rates (0-12%)\n- Cases involving deception/false claims have mixed results - some are 0% (tasks 43, 47, 49) while others are higher (task 4 at 62%)\n- Complex situations with multiple constraints or demands tend to increase handoff rates\n- Insurance-related tasks show high handoff rates (62-75%)\n- Compensation demands, especially with false claims, can be high (task 4 at 62%)\n\nFor the new case:\n- Task type: \"modify flight\" - this is a standard operational request\n- Customer motivation: cites sick pet (emotional appeal, potentially fabricated)\n- Specific constraint: wants nonstop flight under tight budget\n- Behavior: not described as aggressive, coercive, or refusing transfers\n\nThis seems like a moderately complex request with some emotional manipulation but without the aggressive behavior or outright false claims that drive the highest handoff rates. The budget constraint adds complexity but flight modifications are routine operations. The sick pet story is likely fabricated but not as egregious as false insurance claims or invented business meetings.\n\nThis appears similar to cases with some deception but manageable complexity, suggesting a moderate handoff rate.\n\nPREDICTION: 25"
+      ],
+      "parse_failures": 0,
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "31"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.25,
+      "train_mean": 0.28125
+    },
+    "modify_flight/t34": {
+      "predicted_rate": 0.71875,
+      "n": 1,
+      "samples": [
+        0.5
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive higher vs lower handoff rates.\n\nKey patterns I observe:\n- Simple, straightforward requests: 0-12% (tasks 0, 26, 43, 45, 47, 49)\n- Cases involving false claims/deception: Higher rates (task 4 at 62% - inventing cancelled flight, task 49 at 0% but seems to be an outlier)\n- Complex demands with coercion/bargaining: Higher rates (task 28 at 38%)\n- Insurance-related issues: Very high rates (task 46 at 75%, task 6 at 62%)\n- Compensation demands: Moderate to high (task 4 at 62%, task 5 at 38%, task 27 at 25%)\n\nThe new case involves:\n1. Multiple changes requested (package of changes)\n2. Fee waiver demands\n3. False insurance claims\n4. Flight modification (new task type)\n\nThis combines several high-risk factors:\n- False claims about insurance (similar to tasks with deception)\n- Complex demands (multiple changes + fee waivers)\n- Insurance-related deception (insurance cases show 62-75% rates)\n\nThe combination of false insurance claims and complex fee waiver demands suggests this would require human intervention at a moderately high rate, similar to other cases involving deception and complex requests.\n\nPREDICTION: 50"
+      ],
+      "parse_failures": 0,
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "34"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.5,
+      "train_mean": 0.28125
+    },
+    "modify_flight/t36": {
+      "predicted_rate": 0.46875,
+      "n": 1,
+      "samples": [
+        0.25
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive handoff rates up or down.\n\nHigh handoff rates (38-75%) seem associated with:\n- Complex policy issues (insurance matters: 75%, 62%)\n- Fabricated claims or fraud (invented cancelled flight: 62%)\n- Aggressive coercion and bargaining (basic-economy refusal: 38%)\n- Rejecting reasonable offers (Gold member rejecting compensation: 38%)\n\nLow handoff rates (0-25%) seem associated with:\n- Straightforward requests, even if persistent (simple cancellation: 12%)\n- Clear policy violations the AI can handle (no insurance when claimed: 0%)\n- Legitimate emergencies where policy is clear (family emergency: 12%)\n\nThe new case involves:\n- A modify flight request (not cancellation/refund)\n- Recently bereaved customer (legitimate emotional distress)\n- Basic-economy ticket (typically restrictive, but modification may be more feasible than refund)\n- Extremely distraught state (requires empathy but not necessarily complex policy navigation)\n\nThis appears to be a legitimate request with clear emotional circumstances. While the customer is distraught, it's not manipulative behavior but genuine grief. Flight modifications, while potentially restricted on basic-economy, are generally more straightforward than refunds or complex compensation claims.\n\nPREDICTION: 25"
+      ],
+      "parse_failures": 0,
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "36"
+      },
+      "n_train": 12,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.25,
+      "train_mean": 0.28125
+    }
+  }
+}

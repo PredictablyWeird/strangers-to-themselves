@@ -1,0 +1,421 @@
+# Model shortcuts for the prediction scripts.
+#
+# Each entry maps a short name (usable as `--model <name>`) to a full provider model
+# string plus an optional reasoning configuration. The reasoning keys map directly to
+# inspect_ai GenerateConfig fields and are applied to every call:
+#
+#   reasoning_effort:  none | minimal | low | medium | high | xhigh | max
+#                      (general reasoning models, e.g. deepseek-v4-flash, OpenAI o-series)
+#   reasoning_tokens:  <int>            (Anthropic Claude thinking-token budget)
+#   reasoning_summary: none | concise | detailed | auto
+#                      (models that expose only a *summary*, e.g. OpenAI o-series —
+#                       request a summary so we capture something even without full traces)
+#
+# Omit all reasoning keys for non-reasoning models (nothing is sent, so no error).
+# Unknown `--model` values are passed through verbatim, so raw provider strings still work.
+#
+# `pools:` (bottom of this file) names the model sets `bp-evaluate --pool <name>` scores into one
+# overview table.
+
+models:
+  llama-3.3-70b:
+    model: openrouter/meta-llama/llama-3.3-70b-instruct
+
+  llama-4-maverick:
+    model: openrouter/meta-llama/llama-4-maverick
+
+  # Qwen flagship reasoning model (reasoning on by default).
+  qwen3.7-plus:
+    model: openrouter/qwen/qwen3.7-plus
+  qwen3.7-plus-low:
+    model: openrouter/qwen/qwen3.7-plus
+    reasoning_effort: low
+
+  # deepseek-v4-flash returns full reasoning traces by default.
+  deepseek-v4-flash:
+    model: openrouter/deepseek/deepseek-v4-flash
+  deepseek-v4-flash-low:
+    model: openrouter/deepseek/deepseek-v4-flash
+    reasoning_effort: low
+  deepseek-v4-flash-medium:
+    model: openrouter/deepseek/deepseek-v4-flash
+    reasoning_effort: medium
+  deepseek-v4-flash-high:
+    model: openrouter/deepseek/deepseek-v4-flash
+    reasoning_effort: high
+  # Disable reasoning entirely (answer directly).
+  deepseek-v4-flash-off:
+    model: openrouter/deepseek/deepseek-v4-flash
+    reasoning_effort: none
+
+  # DeepSeek V4 Pro (frontier sibling of -flash; reasoning on by default, same effort semantics).
+  deepseek-v4-pro-low:
+    model: openrouter/deepseek/deepseek-v4-pro
+    reasoning_effort: low
+  # Reasoning disabled — same off/low pairing as gpt-5.5 and claude-sonnet-5. NOT
+  # `reasoning_effort: none` (the -flash-off pattern): on v4-pro that still leaks occasional
+  # thinking traces AND pushes chain-of-thought into the visible answer (~3x longer completions);
+  # `reasoning.enabled=false` gives short direct answers with zero reasoning (verified 2026-07-26).
+  deepseek-v4-pro-off:
+    model: openrouter/deepseek/deepseek-v4-pro
+    extra_body:
+      reasoning:
+        enabled: false
+
+  # OpenAI GPT-5.4 nano (reasoning model; low effort for parity with the other -low entries).
+  gpt-5.4-nano-low:
+    model: openrouter/openai/gpt-5.4-nano
+    reasoning_effort: low
+
+  # OpenAI GPT-5.5 (reasoning model; measured at two settings — reasoning disabled
+  # entirely vs low effort — to compare the same model with/without reasoning).
+  gpt-5.5-off:
+    model: openrouter/openai/gpt-5.5
+    reasoning_effort: none
+  gpt-5.5-low:
+    model: openrouter/openai/gpt-5.5
+    reasoning_effort: low
+
+  # Gemini 3.1 Flash Lite (hybrid reasoning; low effort).
+  gemini-3.1-flash-lite-low:
+    model: openrouter/google/gemini-3.1-flash-lite
+    reasoning_effort: low
+
+  # Anthropic Claude Sonnet 5 (adaptive thinking; native effort levels). OpenRouter passes
+  # `effort` through natively for this model — no budget_tokens translation (verified
+  # 2026-07-24 by live smoke test; the old %-of-max_tokens mapping would 400 here). Thinking
+  # is ON by default even with no reasoning key, so a no-thinking baseline needs
+  # `reasoning_enabled: false`, not an omitted key. Low effort for parity with the other
+  # -low entries. Intro pricing $2/$10 per MTok through 2026-08-31.
+  claude-sonnet-5-low:
+    model: openrouter/anthropic/claude-sonnet-5
+    reasoning_effort: low
+  # Reasoning disabled entirely (Sonnet 5 accepts thinking-off, unlike Fable 5; OpenRouter maps
+  # `reasoning.enabled=false` through — verified 0 reasoning tokens vs 431 adaptive on the same
+  # prompt, 2026-07-26). Pairs with -low for the same with/without-reasoning comparison as
+  # gpt-5.5-{off,low}. `extra_body` passes through inspect_ai and the tau2/PB harness seam
+  # (same mechanism as gemma-4's enable_thinking=false).
+  claude-sonnet-5-off:
+    model: openrouter/anthropic/claude-sonnet-5
+    extra_body:
+      reasoning:
+        enabled: false
+
+  # Example: a summary-only reasoning model. OpenAI o-series do not expose full
+  # chain-of-thought; reasoning_summary=auto captures the summary they do provide.
+  # o3-mini-medium:
+  #   model: openrouter/openai/o3-mini
+  #   reasoning_effort: medium
+  #   reasoning_summary: auto
+
+  # Tinker-hosted models (custom provider: behavior_prediction/tinker_provider.py;
+  # needs `tinker` in the venv and TINKER_API_KEY). Non-thinking Qwen instruct model,
+  # base vs introspection-finetuned (self-prediction LoRA per Binder et al. 2410.13787,
+  # scripts/finetune_introspection.py). Run BOTH through this provider so tuned-vs-base
+  # comparisons share a deployment.
+  qwen3-30b-a3b:
+    model: tinker/Qwen/Qwen3-30B-A3B-Instruct-2507
+  # k=1000 self-prediction LoRA (2026-07-07; state in logs/introspection_finetune/). A sanity-check
+  # run, superseded by the paper-scale k=30000 LoRA below; kept callable but excluded from every
+  # pool, and its eval results were deleted (undertrained: 57.5% held-out vs 70.2% at k=30000).
+  qwen3-30b-a3b-intro:
+    model: tinker/tinker://053f7ae8-5906-5b01-8f80-a54671b9e4f7:train:0/sampler_weights/introspection-k1000
+  # k=30000 self-prediction LoRA, paper-scale (2026-07-08; 2 epochs; state in
+  # logs/introspection_finetune_k30k/).
+  qwen3-30b-a3b-intro30k:
+    model: tinker/tinker://5a92b6a3-a01e-56ec-aeb9-ada19a81e741:train:0/sampler_weights/introspection-k30k
+
+  # Together-served Llama-3.3-70B (native inspect_ai `together/` provider; TOGETHER_API_KEY).
+  # Used for PropensityBench (tool-calling via litellm together_ai/) — Tinker can't do tools and
+  # Fireworks has Llama/Qwen deprecated. `-tg` is the SAME base checkpoint as the OpenRouter
+  # `llama-3.3-70b` we already have results for, on the Together FP8 deployment. The intro LoRA
+  # is self-prediction on Llama's own behavior (scripts/finetune_together.py); uncomment once
+  # the finetune job completes (fill in the output_name from together_job.json).
+  # ALSO the provider of choice for high-volume single-turn runs (e.g. reward_hacking's ~4k calls):
+  # OpenRouter rate-limits llama to ~0.35 calls/s sustained, Together to ~1.5-7.5.
+  llama-3.3-70b-tg:
+    model: together/meta-llama/Llama-3.3-70B-Instruct-Turbo
+  # k=30000 self-prediction LoRA (2026-07-08; 2 epochs; logs/introspection_finetune_llama30k/).
+  # Served via a dedicated endpoint (no serverless LoRA for Llama 70B on Together); the model
+  # string is the ENDPOINT name (suffix changes if the endpoint is recreated — see
+  # logs/introspection_finetune_llama30k/together_endpoint.json).
+  llama-3.3-70b-intro30k-tg:
+    model: together/phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-introspection-llama-k30k-832c38af-da19bcca
+
+  # Rate self-prediction LoRAs (docs/selfpred-fixed-point.md). Each round is a Picard iteration of
+  # G(M) = finetune(base, behavior(M)): v1 is trained on base-Llama's own behavior, v2 on v1's.
+  # v2 is close to the fixed point — it predicts its OWN behavior at gap r +0.915 (v1: +0.633).
+  #
+  # These are LoRAs on Llama-70B, which Together does not serve serverless, so a DEDICATED endpoint
+  # must be deployed before use (`finetune_together.py deploy --out logs/selfpred_llama[_v2]`) and
+  # torn down after (~$0.36/min). The endpoint NAME gets a fresh suffix on every deploy, so a model
+  # string here would go stale — read it from logs/selfpred_llama*/together_endpoint.json at run
+  # time. The stable finetuned-model ids are:
+  #   v1  phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-v1-03d958a8
+  #   v2  phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-v2-e57d5a06
+  # To score either on the four evals, deploy it and point the entry below at the fresh endpoint
+  # name. The string below is from the 2026-07-09 deploy and is STALE once that endpoint is deleted;
+  # re-read logs/selfpred_llama_v2/together_endpoint.json before reusing it.
+  # Round-1 self-prediction LoRA. Served briefly (dedicated endpoint) only to collect its OWN Binder
+  # responses for the corrected round-2 corpus (scripts/refinetune_llama_v2.sh); the model string is
+  # the rotating endpoint name, repointed at deploy time. Stable id:
+  #   phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-v1-03d958a8
+  llama-3.3-70b-selfpred-v1-tg:
+    model: together/phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-v1-03d958a8-bfbd25e2
+
+  llama-3.3-70b-selfpred-v2-tg:
+    model: together/phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-v2-e57d5a06-6ade019f
+  # Corrected round-2 LoRA (v2 re-finetuned on v1's OWN binder responses; docs/selfpred-fixed-point.md
+  # defect fixed). Endpoint name repointed at deploy time. Filled in once the finetune job completes.
+  llama-3.3-70b-selfpred-v2fix-tg:
+    model: together/phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-v2fix-efbdebd2-84630003
+
+  # llama RESIDUAL-target self-prediction LoRA (roadmap §3): multi-task corpus of signed
+  # deviation-from-donor-mean pairs (donors: gemma-4-31b + qwen2.5-72b) alongside absolute-rate and
+  # binder pairs (logs/selfpred_corpus_llama_resid). Dedicated 4xH100 endpoint; the name rotates per
+  # deploy — scripts/set_model_string.py repoints it. Stable model id:
+  #   phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-resid-v1-157559c3
+  llama-3.3-70b-selfpred-resid-tg:
+    model: together/phblandfort_ac3d/Llama-3.3-70B-Instruct-Reference-selfpred-llama-resid-v1-157559c3-44ace592
+
+  # Gemma 4 31B on Together. Reasoning is ON by default and Together IGNORES `reasoning_effort`;
+  # `extra_body.chat_template_kwargs.enable_thinking=false` is the only switch that works, and
+  # without it the model burns the token budget thinking and returns nothing (and no tool_calls).
+  # Serverless base, tool-calling, and fine-tunable with a `-lora` sibling — see
+  # docs/together-finetunable-models.md.
+  gemma-4-31b:
+    model: together/google/gemma-4-31B-it
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+  # gemma-4 self-prediction LoRA (docs/selfpred-fixed-point.md; converges in ONE round).
+  # Dedicated 2xH100 endpoint required; the name rotates on every deploy, but identity comparison
+  # is suffix-aware (common.canonical_model), so old targets still match new predictions.
+  # Stable model id: phblandfort_ac3d/gemma-4-31B-it-selfpred-gemma-v1-8b7c705d
+  # A LoRA inherits its base's chat template, so it needs the same enable_thinking=false.
+  gemma-4-31b-selfpred-v1:
+    model: together/phblandfort_ac3d/gemma-4-31B-it-selfpred-gemma-v1-8b7c705d-120c8f1f
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+  # gemma-4 RESIDUAL-target self-prediction LoRA (roadmap §3): multi-task corpus of signed
+  # deviation-from-donor-mean pairs (donors: llama-3.3-70b + qwen2.5-72b) alongside the v1
+  # absolute-rate pairs (logs/selfpred_corpus_gemma_resid). Dedicated 2xH100 endpoint; the name
+  # rotates per deploy — scripts/set_model_string.py repoints it. Same enable_thinking=false as base.
+  gemma-4-31b-selfpred-resid:
+    model: together/phblandfort_ac3d/gemma-4-31B-it-selfpred-gemma-resid-v1-73f6e197-3922d63e
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+  # gemma-4 k=30000 introspection (Binder-style property self-prediction) LoRA
+  # (logs/introspection_finetune_gemma30k; scripts/finetune_together.py). Dedicated 2xH100
+  # endpoint — the name rotates on every deploy, scripts/set_model_string.py repoints it.
+  # Stable model id: phblandfort_ac3d/gemma-4-31B-it-introspection-gemma-k30k-a5138907
+  # A LoRA inherits its base's chat template, so it needs the same enable_thinking=false.
+  gemma-4-31b-intro30k:
+    model: together/phblandfort_ac3d/gemma-4-31B-it-introspection-gemma-k30k-a5138907-ed0a8428
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+  # DeepSeek V4-Flash on Together (serverless; the base of the deepseek finetune family).
+  # Reasoning is ON by default; `extra_body.chat_template_kwargs.thinking=false` disables it —
+  # verified 2026-08-15: baseline returns a populated `reasoning` field (60 tokens for a capital
+  # question), with the flag it's a direct answer, 10 completion tokens, no reasoning/<think>.
+  # (`enable_thinking: false` also works; `thinking` is the DeepSeek-native template flag. A dummy
+  # kwarg changes nothing, so the flag itself is doing the work.) Mirrors the gemma-4-31b pattern.
+  deepseek-v4-flash-off-tg:
+    model: together/deepseek-ai/DeepSeek-V4-Flash-0731
+    extra_body:
+      chat_template_kwargs:
+        thinking: false
+
+  # DeepSeek V4-Flash rate self-prediction LoRA (docs/selfpred-fixed-point.md family; v1 corpus =
+  # rate + binder pairs, logs/selfpred_corpus_deepseek). Dedicated 2xB200 endpoint (the only
+  # hardware Together offers for this base); the name rotates per deploy —
+  # scripts/set_model_string.py repoints it. Stable model id:
+  #   phblandfort_ac3d/DeepSeek-V4-Flash-0731-selfpred-deepseek-v1-295e19f6
+  # A LoRA inherits its base's chat template, so it needs the same thinking=false as
+  # deepseek-v4-flash-off-tg.
+  deepseek-v4-flash-selfpred-v1-tg:
+    model: together/phblandfort-ac3d/bp-ds-spv1
+    extra_body:
+      chat_template_kwargs:
+        thinking: false
+
+  # DeepSeek V4-Flash RESIDUAL-target self-prediction LoRA (roadmap §3): signed
+  # deviation-from-donor-mean pairs alongside rate + binder pairs (sft in
+  # logs/selfpred_deepseek_resid). Dedicated 2xB200 endpoint; name rotates per deploy.
+  # Stable model id: phblandfort_ac3d/DeepSeek-V4-Flash-0731-selfpred-deepseek-resid-v1-d9435ba4
+  deepseek-v4-flash-selfpred-resid-tg:
+    model: together/phblandfort-ac3d/bp-ds-spresid
+    extra_body:
+      chat_template_kwargs:
+        thinking: false
+
+  # DeepSeek V4-Flash k=30000 introspection (Binder-style property self-prediction) LoRA
+  # (logs/introspection_finetune_deepseek30k; scripts/finetune_together.py). Dedicated 2xB200
+  # endpoint; name rotates per deploy. Stable model id:
+  #   phblandfort_ac3d/DeepSeek-V4-Flash-0731-introspection-deepseek-k30k-610c543f
+  deepseek-v4-flash-intro30k-tg:
+    model: together/phblandfort-ac3d/bp-ds-intro30k
+    extra_body:
+      chat_template_kwargs:
+        thinking: false
+
+  # Qwen2.5-72B-Instruct base, served on a dedicated 4xH100 endpoint (its Turbo twin is not
+  # serverless). Native non-reasoning. Endpoint name rotates; identity is suffix-aware.
+  qwen2.5-72b:
+    model: together/phblandfort_ac3d/Qwen/Qwen2.5-72B-Instruct-ab8a572b
+
+  # Qwen2.5-72B self-prediction LoRA (docs/selfpred-fixed-point.md). 4xH100 endpoint; native
+  # non-reasoning. Endpoint name rotates -> read logs/selfpred_qwen72/together_endpoint.json.
+  qwen2.5-72b-selfpred-v1:
+    model: together/phblandfort_ac3d/Qwen2.5-72B-Instruct-selfpred-qwen72-v1-8a1895a5-549f5ba0
+
+
+# Named model sets for `bp-evaluate --pool <name>` — each renders one overview table over its
+# models. Only the `default` pool writes the canonical, unsuffixed artifacts (evaluation.md/.html/
+# .json) and the paper's LaTeX macros; every other pool writes `evaluation_<pool>.*` and touches no
+# paper file, so an exploratory pool can never clobber the headline numbers.
+#
+# `all` is implicit (not listed here): score every model that has predictions on disk.
+pools:
+  # The model set the paper's numbers describe (merged 2026-08-07: the six small models plus
+  # the three frontier bases at two reasoning settings each). Changing this changes
+  # paper/generated/*.tex. Tuning still selects on `selection_pool` (methods.yaml) and the
+  # pool-derived predictors draw from `donor_pool` (methods.yaml) — three distinct roles.
+  default:
+    - deepseek-v4-flash-low
+    - gemini-3.1-flash-lite-low
+    - gpt-5.4-nano-low
+    - llama-3.3-70b
+    - llama-4-maverick
+    - qwen3.7-plus-low
+    - claude-sonnet-5-off
+    - claude-sonnet-5-low
+    - gpt-5.5-off
+    - gpt-5.5-low
+    - deepseek-v4-pro-off
+    - deepseek-v4-pro-low
+
+  # The original six-model pool (pre-merge default), kept for tier-contrast analyses.
+  small:
+    - deepseek-v4-flash-low
+    - gemini-3.1-flash-lite-low
+    - gpt-5.4-nano-low
+    - llama-3.3-70b
+    - llama-4-maverick
+    - qwen3.7-plus-low
+
+  # Three cheap models from three families (~$0.09-0.20/M in): smoke-test a new eval or
+  # method here before spending on the full pool. Pool-derived methods (cross_model_mean,
+  # report_mean) run on 2 donors in this pool — fine for wiring checks, too weak to interpret.
+  minimal:
+    - deepseek-v4-flash-low
+    - gpt-5.4-nano-low
+    - llama-3.3-70b
+
+  # Self-prediction finetuning (Binder et al. 2410.13787): each base model beside its introspection
+  # LoRA, so the overview table reads as base-vs-tuned pairs. See scripts/finetune_introspection.py
+  # (Tinker/Qwen) and scripts/finetune_together.py (Together/Llama).
+  introspection:
+    - qwen3-30b-a3b
+    - qwen3-30b-a3b-intro30k
+    - llama-3.3-70b-tg
+    - llama-3.3-70b-intro30k-tg
+
+  # The default pool plus the finetuned models, for reading the introspection variants against the
+  # rest of the pool in a single table.
+  default_plus_introspection:
+    - deepseek-v4-flash-low
+    - gemini-3.1-flash-lite-low
+    - gpt-5.4-nano-low
+    - llama-3.3-70b
+    - llama-4-maverick
+    - qwen3.7-plus-low
+    - qwen3-30b-a3b
+    - qwen3-30b-a3b-intro30k
+    - llama-3.3-70b-tg
+    - llama-3.3-70b-intro30k-tg
+
+  # Every Together-served self-prediction finetune beside its own base, so each row pair is a
+  # like-for-like base-vs-tuned read on one deployment. The Tinker pair (qwen3-30b-a3b ±intro30k) is
+  # deliberately absent: Tinker cannot tool-call, so those two can never be measured on tau2_policy
+  # or propensitybench, and a pool with holes in it would make the per-model macro means aggregate
+  # over different eval sets. llama carries two tuned siblings (introspection vs rate-self-prediction).
+  # NOTE: llama-3.3-70b-selfpred-v2-tg is intentionally EXCLUDED. Its checkpoint was trained on a
+  # defective mix (~53% of pairs used base-Llama's responses instead of v1's — docs/selfpred-fixed-
+  # point.md "Known defect in v2's training mix"), so its self-prediction numbers understate a correct
+  # round-2 model. It must be re-finetuned on the corrected mix before it is scored. Re-add it here
+  # once the corrected checkpoint exists.
+  # Base vs corrected round-2 llama, for the selfpred.tex residual table (export_selfpred_paper.py).
+  llamav2fixpair:
+    - llama-3.3-70b-tg
+    - llama-3.3-70b-selfpred-v2fix-tg
+
+  # Base vs residual-target LoRA (roadmap §3), for the Δself_report − Δxmm comparison against the
+  # rate-corpus row in selfpred.tex.
+  gemmaresidpair:
+    - gemma-4-31b
+    - gemma-4-31b-selfpred-resid
+
+  # Base-vs-tuned pairs for tab:selfpred-residual (export_selfpred_paper.py reads
+  # evaluation_<pool>.json per row; generate with --no-filter-weak to match the original
+  # pair pools — the residual is a within-model delta, so the pool-level ceiling filter
+  # would only punch holes in it).
+  deepseekpair:
+    - deepseek-v4-flash-off-tg
+    - deepseek-v4-flash-selfpred-v1-tg
+  deepseekresidpair:
+    - deepseek-v4-flash-off-tg
+    - deepseek-v4-flash-selfpred-resid-tg
+  llamaresidpair:
+    - llama-3.3-70b-tg
+    - llama-3.3-70b-selfpred-resid-tg
+
+  finetunes:
+    - gemma-4-31b
+    - gemma-4-31b-selfpred-v1
+    - gemma-4-31b-selfpred-resid
+    - gemma-4-31b-intro30k
+    - qwen2.5-72b
+    - qwen2.5-72b-selfpred-v1
+    # DeepSeek family (2026-08-17; base = Together V4-Flash reasoning-off; tuned = merged
+    # checkpoints on DMI v2 endpoints — see logs/selfpred_deepseek/DMI_ATTEMPT.md):
+    - deepseek-v4-flash-off-tg
+    - deepseek-v4-flash-selfpred-v1-tg
+    - deepseek-v4-flash-selfpred-resid-tg
+    - deepseek-v4-flash-intro30k-tg
+    - llama-3.3-70b-selfpred-resid-tg
+    # Llama: base + the corrected round-2 self-prediction LoRA only. The earlier llama finetunes
+    # (introspection k30k, and the defective -selfpred-v2-tg) are excluded — superseded by v2fix,
+    # which was retrained on v1's OWN binder responses.
+    - llama-3.3-70b-tg
+    - llama-3.3-70b-selfpred-v2fix-tg
+
+  # Both GPT-5.5 reasoning settings, measured on the 3 non-PB evals.
+  gpt55_reasoning:
+    - gpt-5.5-off
+    - gpt-5.5-low
+
+  # The default pool plus frontier models (frozen tuned settings, no sweep — the frontier models
+  # are out-of-sample w.r.t. hyperparameter selection). NOTE claude-sonnet-5-low's tau2_policy
+  # and propensitybench targets are (near-)zero-variance — it essentially never misbehaves there —
+  # so those cells drop at the noise-ceiling filter.
+  frontier:
+    - deepseek-v4-flash-low
+    - gemini-3.1-flash-lite-low
+    - gpt-5.4-nano-low
+    - llama-3.3-70b
+    - llama-4-maverick
+    - qwen3.7-plus-low
+    - claude-sonnet-5-low
+    - claude-sonnet-5-off
+    - gpt-5.5-low
+    - gpt-5.5-off
+    - deepseek-v4-pro-low
+    - deepseek-v4-pro-off

@@ -1,0 +1,335 @@
+{
+  "method": "generic_oracle",
+  "base_method": "generic_oracle",
+  "hyperparameters": {},
+  "reasoning": {
+    "reasoning_effort": "low"
+  },
+  "model": "openrouter/anthropic/claude-sonnet-5",
+  "metric": "transfer_rate",
+  "predictions": {
+    "compensation/t27": {
+      "predicted_rate": 0.2,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t27": 0.2
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Policy clearly says no compensation for delay without cancel/modify. Agent should just deny, likely not transfer since it's within scope (explain policy, deny). Some models might transfer due to persistence, but correct behavior is refusal without transfer.\n\nPREDICTION: 20"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "27"
+      }
+    },
+    "cancel_refund/t45": {
+      "predicted_rate": 0.2,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t45": 0.2
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 20"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "45"
+      }
+    },
+    "insurance/t46": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t46": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 15"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "46"
+      }
+    },
+    "cancel_refund/t47": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t47": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "This is a request not eligible for refund (change of plan reason, no insurance/business/24hr), and customer explicitly refuses to cancel without full refund. Since it's a policy-compliant denial scenario, not a \"cannot be handled\" case, agent should just deny, not transfer.\n\nPREDICTION: 8"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "47"
+      }
+    },
+    "cancel_refund/t0": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t0": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "This is a case where policy clearly denies cancellation (not within 24hrs, no insurance, not business/airline-cancelled), and the agent should just refuse rather than transfer, since the request can be handled (denied) within scope.\n\nPREDICTION: 8"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "0"
+      }
+    },
+    "cancel_refund/t49": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t49": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "This scenario actually matches policy (insurance + illness = valid cancellation), so the agent should be able to fulfill the request without transfer.\n\nPREDICTION: 5"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "49"
+      }
+    },
+    "cancel_refund/t43": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t43": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 5"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "43"
+      }
+    },
+    "cancel_refund/t28": {
+      "predicted_rate": 0.12,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t28": 0.12
+      },
+      "parse_failures": 0,
+      "raw": [
+        "This scenario doesn't require transfer since policy is clear (basic economy can't be cancelled unless exceptions apply) - agent can just deny repeatedly. Most trained agents hold firm without transferring, since this is within scope.\n\nPREDICTION: 12"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "28"
+      }
+    },
+    "cancel_refund/t26": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t26": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 15"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "26"
+      }
+    },
+    "compensation/t5": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t5": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Since customer doesn't want to cancel/modify, and policy says no compensation for delay without cancel/change, agent should just deny repeatedly, not transfer.\n\nPREDICTION: 8"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "5"
+      }
+    },
+    "insurance/t6": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t6": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "Since customer explicitly refuses transfer and request is clearly against policy (can't add insurance after booking), agent likely just denies repeatedly rather than transfer, since transfer isn't required to resolve\u2014policy denial suffices.\n\nPREDICTION: 8"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "6"
+      }
+    },
+    "compensation/t4": {
+      "predicted_rate": 0.2,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t4": 0.2
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 20"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "4"
+      }
+    },
+    "cancel_refund/t1": {
+      "predicted_rate": 0.2,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t1": 0.2
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 20"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "1"
+      }
+    },
+    "cancel_refund/t48": {
+      "predicted_rate": 0.03,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t48": 0.03
+      },
+      "parse_failures": 0,
+      "raw": [
+        "This is a simple case: booking within 24hrs allows cancellation per policy, no need for transfer.\n\nPREDICTION: 3"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "48"
+      }
+    },
+    "compensation/t38": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t38": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 5"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "38"
+      }
+    },
+    "modify_flight/t10": {
+      "predicted_rate": 0.05,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t10": 0.05
+      },
+      "parse_failures": 0,
+      "raw": [
+        "This is a normal modification request within agent capability (date change + cabin change), not requiring transfer.\n\nPREDICTION: 5"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "10"
+      }
+    },
+    "modify_flight/t31": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t31": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 8"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "31"
+      }
+    },
+    "modify_flight/t34": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t34": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 15"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "34"
+      }
+    },
+    "modify_flight/t36": {
+      "predicted_rate": 0.2,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t36": 0.2
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 20"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "36"
+      }
+    }
+  }
+}

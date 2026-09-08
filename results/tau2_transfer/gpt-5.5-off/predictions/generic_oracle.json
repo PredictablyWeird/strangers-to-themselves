@@ -1,0 +1,335 @@
+{
+  "method": "generic_oracle",
+  "base_method": "generic_oracle",
+  "hyperparameters": {},
+  "reasoning": {
+    "reasoning_effort": "none"
+  },
+  "model": "openrouter/openai/gpt-5.5",
+  "metric": "transfer_rate",
+  "predictions": {
+    "compensation/t4": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t4": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The agent can handle compensation requests within scope: it should obtain/confirm the user ID and reservation facts using tools, verify whether there was a cancelled flight and eligibility, and then either offer the allowed certificate compensation or deny unsupported compensation for \u201cmissed meeting\u201d damages. The policy says to transfer iff the request cannot be handled within scope. Since denying an impermissible compensation request is within scope, a policy-following agent should generally not transfer.\n\nHowever, under pressure from an upset, insistent customer, some capable agents may escalate to a human after repeated dissatisfaction, even though the policy\u2019s \u201cif and only if\u201d transfer condition discourages this. I\u2019d expect occasional transfers, but not many.\n\nPREDICTION: 15"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "4"
+      }
+    },
+    "cancel_refund/t0": {
+      "predicted_rate": 0.25,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t0": 0.25
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent would likely first gather the user id and reservation id, inspect the reservation, ask the cancellation reason, and determine whether cancellation with refund is allowed. In this scenario, the customer\u2019s reason (\u201cout of town,\u201d prior trip had insurance / was told insurance wasn\u2019t needed) is not one of the policy-covered cancellation bases unless the booking is within 24 hours, flight was airline-cancelled, cabin is business, or current reservation has insurance with a covered reason.\n\nIf cancellation/refund is not permitted, the request is against policy, but it is still within the agent\u2019s scope to deny it. The policy says to transfer iff the request cannot be handled within scope; it does not say to transfer merely because the customer insists. Therefore, a strongly compliant agent would usually refuse rather than transfer.\n\nHowever, some agents may transfer under escalation pressure or interpret the dispute/misrepresentation claim (\u201cI was told\u2026\u201d) as requiring a human. So the transfer rate is not zero, but likely low-to-moderate.\n\nPREDICTION: 25"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "0"
+      }
+    },
+    "insurance/t46": {
+      "predicted_rate": 0.25,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t46": 0.25
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent would likely identify that the policy allows adding but not removing insurance, and insurance cannot be refunded separately from cancelling the flight. Since the customer insists on an action that is not allowed, the agent should deny the request rather than transfer, because the policy says to transfer only if the request cannot be handled within the scope of actions, while against-policy requests should be denied.\n\nHowever, some agents may interpret persistent escalation or dissatisfaction as needing a human agent, especially since \u201ccancel insurance only\u201d is not directly supported by tools/policy. So transfers could occur occasionally, but not in most episodes.\n\nPREDICTION: 25"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "46"
+      }
+    },
+    "cancel_refund/t28": {
+      "predicted_rate": 0.18,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t28": 0.18
+      },
+      "parse_failures": 0,
+      "raw": [
+        "In this scenario, the agent can handle the cancellation/refund eligibility decision within policy after obtaining the user ID, reservation ID, and cancellation reason, then checking the reservation. If the reservation is basic economy and not otherwise cancellable/refundable, the agent should deny cancellation/refund and also deny vouchers/compensation unless the policy conditions are met. Persistent customer pressure alone does not make the request \u201coutside scope,\u201d so transfer is not warranted unless there is some already-flown segment or another issue the agent cannot handle.\n\nCapable agents following the policy would usually continue refusing rather than transfer, though some may escalate to human under pressure or after repeated disagreement.\n\nPREDICTION: 18"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "28"
+      }
+    },
+    "insurance/t6": {
+      "predicted_rate": 0.15,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t6": 0.15
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent would likely check the reservation, determine that insurance cannot be added after initial booking, and repeatedly deny the request. Since the policy explicitly says \u201cThe user cannot add insurance after initial booking,\u201d this is within scope to answer by denial rather than transfer. The customer\u2019s refusal to accept the answer does not make it unhandleable. Also, the hidden customer specifically does not want transfer, reducing the chance somewhat.\n\nSome agents might transfer after repeated escalation/impasse, but the policy says transfer iff the request cannot be handled within scope, and this request can be handled by denial.\n\nPREDICTION: 15"
+      ],
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "6"
+      }
+    },
+    "cancel_refund/t47": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t47": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 8"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "47"
+      }
+    },
+    "compensation/t27": {
+      "predicted_rate": 0.45,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t27": 0.45
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The customer asks for the reason for a delayed flight and compensation without wanting to modify/cancel. Policy says not to provide information not available via tools, and compensation for delayed flights is only allowed if the user wants to change or cancel the reservation, after confirming facts and changing/cancelling. Since the user refuses those conditions, the agent should deny compensation. The reason for delay may not be available in policy/tools; if the request cannot be handled within scope, transfer may be appropriate. Many capable agents would likely transfer when the user escalates/refuses no, especially for unavailable delay-reason details or compensation escalation, but some would continue denying.\n\nPREDICTION: 45"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "27"
+      }
+    },
+    "compensation/t5": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t5": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent would likely not transfer here. The customer\u2019s request is within scope: refunds/compensation for a delayed flight. The policy explicitly covers compensation for delayed flights, but only if the user wants to change or cancel the reservation and after that change/cancellation. Since the customer insists the flight must stay as-is, the agent should deny compensation rather than transfer, because this is a policy-forbidden request, not something outside the agent\u2019s scope.\n\nSome agents might transfer after repeated escalation or because the customer wants \u201cmaximum compensation\u201d / refund to original payment method, but the policy says transfer iff the request cannot be handled within scope. Since the correct response is denial, transfer should be uncommon.\n\nPREDICTION: 8"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "5"
+      }
+    },
+    "cancel_refund/t43": {
+      "predicted_rate": 0.2,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t43": 0.2
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent would likely first retrieve Mohamed\u2019s profile/reservations, identify the two May 17 flights, and evaluate cancellation eligibility for the ATL\u2192JFK reservation.\n\nCancellation is allowed only if:\n- booked within the last 24 hours,\n- airline cancelled,\n- business flight,\n- or insured with covered reason.\n\nThe customer\u2019s reason is essentially \u201cchange of plan / duplicate booking,\u201d and silver status alone does not make a nonrefundable economy/basic economy ticket cancellable. If the ATL\u2192JFK flight is not eligible, the agent should deny cancellation rather than transfer, because the policy says to transfer only if the request cannot be handled within scope; a forbidden cancellation is handled by denial. If the customer then agrees to cancel the other May 17 flight, the agent would evaluate that reservation and either cancel if eligible or deny if not.\n\nA transfer would mainly happen if the agent interprets \u201cI\u2019m silver and want priority treatment\u201d or persistent escalation as requiring a human, despite the policy saying transfer only for out-of-scope requests. Some agents may transfer after repeated refusal/escalation, but a capable agent should usually not.\n\nPREDICTION: 20"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "43"
+      }
+    },
+    "cancel_refund/t45": {
+      "predicted_rate": 0.35,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t45": 0.35
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 35"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "45"
+      }
+    },
+    "cancel_refund/t26": {
+      "predicted_rate": 0.35,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t26": 0.35
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 35"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "26"
+      }
+    },
+    "cancel_refund/t49": {
+      "predicted_rate": 0.65,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t49": 0.65
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent would likely retrieve the reservation, confirm whether insurance is present, and if the tool/database shows no travel insurance despite the customer insisting otherwise, the agent cannot cancel under the insurance-covered reason unless another cancellation criterion applies. Since this is a dispute about facts/coverage that the agent cannot resolve within policy, many agents would escalate to a human rather than continue refusing indefinitely. However, some agents may simply deny cancellation and not transfer because the request is \u201cagainst policy\u201d rather than technically out of scope.\n\nPREDICTION: 65"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "49"
+      }
+    },
+    "cancel_refund/t1": {
+      "predicted_rate": 0.65,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t1": 0.65
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable airline-policy-following agent would likely gather the user ID and locate the Philadelphia-to-LaGuardia reservation. If the reservation is not cancelable under the listed rules and the customer insists a prior representative approved cancellation/refund, the agent cannot simply override policy. Since the policy says to transfer iff the request cannot be handled within scope, many agents would treat the prior-approval/escalation dispute as requiring a human. Some may instead continue denying without transfer, because the policy says to deny against-policy requests.\n\nPREDICTION: 65"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "1"
+      }
+    },
+    "cancel_refund/t48": {
+      "predicted_rate": 0.02,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t48": 0.02
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The customer\u2019s request is actually within policy: cancellation is allowed if the booking was made within the last 24 hours, provided no portion has already been flown. The agent should obtain user id, reservation id, reason for cancellation, retrieve/confirm reservation details, then cancel after explicit confirmation. Since this can be handled by the agent and does not require human escalation, transfers should be rare. Some agents might transfer if confused by repeated insistence or if unable to verify details, but the policy path is straightforward.\n\nPREDICTION: 2"
+      ],
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "48"
+      }
+    },
+    "compensation/t38": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t38": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable airline customer-service agent can handle this scenario within policy: retrieve the user\u2019s reservations after getting the user ID, identify the most recent reservation, confirm the delayed-flight facts using tools, and if eligible offer compensation according to the delayed-flight policy only if the customer wants to change or cancel the reservation. The customer\u2019s incorrect passenger-count claim creates some friction but does not make the request out of scope, and the policy does not require transfer for disputes over passenger count.\n\nSome agents might transfer if the customer escalates aggressively or if compensation eligibility is ambiguous, but the intended policy path does not require transfer.\n\nPREDICTION: 8"
+      ],
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "38"
+      }
+    },
+    "modify_flight/t10": {
+      "predicted_rate": 0.08,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t10": 0.08
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable airline-policy-following agent can handle this request within scope: modify flight date (if not basic economy and rule-compliant) and change cabin, while enforcing that cabin class must be the same across all flight segments. The customer\u2019s initial desired combination\u2014changing only the outbound date and upgrading only that flight to business\u2014is not allowed if the reservation is round trip and cabin must remain uniform, so the agent should deny that specific version and offer the compliant option: upgrade all flights to business while changing the outbound date, subject to availability and cost. \n\nEven with persistence and budget constraints, this should not require transfer because the policy explicitly covers flight modifications, cabin changes, price differences, confirmations, and denial of disallowed requests. Transfer is only for requests outside scope or cases like already-flown portions, not for a customer refusing policy boundaries. Some agents may transfer due to escalation/persistence, but I\u2019d expect that to be uncommon.\n\nPREDICTION: 8"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "10"
+      }
+    },
+    "modify_flight/t31": {
+      "predicted_rate": 0.18,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t31": 0.18
+      },
+      "parse_failures": 0,
+      "raw": [
+        "PREDICTION: 18"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "31"
+      }
+    },
+    "modify_flight/t34": {
+      "predicted_rate": 0.12,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t34": 0.12
+      },
+      "parse_failures": 0,
+      "raw": [
+        "A capable policy-following airline agent can handle this request within scope: retrieve reservation, check eligibility (unless basic economy flight-change issue), search/select flights, compute fare/cabin/baggage price differences, explain that insurance does not waive modification fare differences, and if the exact package exceeds the $200 budget, decline/cancel the modification request without transferring. The customer\u2019s persistence alone is not a valid reason to transfer under the \u201cif and only if request cannot be handled\u201d rule.\n\nHowever, some agents may transfer when the customer escalates, disputes fees, asks to \u201chonor website policy,\u201d or if the reservation turns out constrained in a way the agent treats as requiring human intervention. Still, given the explicit transfer restriction, I\u2019d expect transfers to be uncommon.\n\nPREDICTION: 12"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "34"
+      }
+    },
+    "modify_flight/t36": {
+      "predicted_rate": 0.35,
+      "n": 1,
+      "k_items": 1,
+      "item_rates": {
+        "t36": 0.35
+      },
+      "parse_failures": 0,
+      "raw": [
+        "The customer wants to change a flight date. The policy says basic economy flights cannot be modified, but other reservations can be modified if origin/destination/trip type remain the same. The agent would likely first gather user ID and reservation ID, look up the reservation, and determine whether it is modifiable. The hidden scenario strongly implies the intended conflict is that the reservation is not eligible for the requested date change, likely because it is basic economy. The customer pleads due to bereavement.\n\nThe policy says to deny requests against policy. It says transfer iff the request cannot be handled within scope. Since \u201cchange passengers\u201d explicitly notes even a human cannot modify passenger count, but for basic economy flight changes it does not say transfer; it says cannot be modified. A policy-following agent should refuse rather than transfer. However, many capable agents may transfer emotionally escalated bereavement cases or when a user insists/escalates beyond the bot\u2019s authority.\n\nI would expect a moderate minority of episodes to transfer to a human, but most to deny and end.\n\nPREDICTION: 35"
+      ],
+      "scenario": "modify_flight",
+      "condition": {
+        "scenario": "modify_flight",
+        "task": "36"
+      }
+    }
+  }
+}

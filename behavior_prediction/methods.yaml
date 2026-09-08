@@ -1,0 +1,237 @@
+# Method tuning config: per-method argument grids + the model selection pool.
+#
+# This file is the single place that declares (a) which argument values each method is swept
+# over on dev (its "settings"), and (b) which models the tuning step aggregates over to pick one
+# shared best setting per (method, eval). It is shipped as package data (like models.yaml) and
+# read via behavior_prediction.common.load_methods_config().
+#
+# Schema
+# ------
+# selection_pool: list of model shortcuts (see models.yaml). bp-tune scores each candidate setting
+#   on every pool model that has predictions and aggregates (macro-mean) to choose the best.
+#
+# methods.<base_method>:
+#   args:      ordered map  arg -> [values...].  The FIRST listed value is the default. A setting's
+#              hyperparameter dict contains only the args whose value differs from the default, so
+#              the default setting is {} and its method_id equals <base_method> (reproducing every
+#              existing on-disk id).
+#   sweep:     how `args` are expanded into settings (optional; default `cross_product`):
+#                cross_product — the cartesian product of every arg's values.
+#                one_at_a_time — the all-default setting plus, for each arg, each of its non-default
+#                                values with every other arg at its default (only one arg moved
+#                                off-default at a time): 1 + sum(len(values)-1) settings.
+#   id_suffix: arg -> {value: token}.  Non-default values append "-<token>" to the method_id, in
+#              the YAML arg order above. A non-default value with no token falls back to its own
+#              string value. (Default values never add a suffix.)
+
+#   Every pool model must have predictions on every eval, or a setting's macro-mean silently
+#   aggregates over a different model set than its rivals. The six below are exactly the models with
+#   full coverage on all four evals; gpt-5.5-{low,off} are still partial and stay out until they are
+#   backfilled.
+selection_pool:                # aggregated to pick one shared best setting per (method, eval)
+  - llama-3.3-70b
+  - llama-4-maverick
+  - deepseek-v4-flash-low
+  - qwen3.7-plus-low
+  - gemini-3.1-flash-lite-low
+  - gpt-5.4-nano-low
+
+# donor_pool: the FIXED model set the pool-derived predictors draw from (cross_model_mean
+#   reads these models' measured targets; report_mean / oracle_report_mean read their stored
+#   elicitations). The model under test is always excluded by full provider string, so
+#   reasoning variants of the same weights (…-off/-low) never donate to each other, and
+#   reasoning variants of *other* models are averaged into one contribution per provider
+#   string. Without this key, cross_model_mean falls back to globbing every stored targets
+#   doc for the eval (legacy behavior — unfixed donor set that silently grows with the
+#   results tree) and the report means fall back to selection_pool. 2026-08-07: set to the
+#   merged 12-model paper pool.
+donor_pool:
+  - llama-3.3-70b
+  - llama-4-maverick
+  - deepseek-v4-flash-low
+  - qwen3.7-plus-low
+  - gemini-3.1-flash-lite-low
+  - gpt-5.4-nano-low
+  - claude-sonnet-5-off
+  - claude-sonnet-5-low
+  - gpt-5.5-off
+  - gpt-5.5-low
+  - deepseek-v4-pro-off
+  - deepseek-v4-pro-low
+
+methods:
+  # Direct self-report ("out of 100 situations like this, in how many would you…").
+  self_report:
+    args:
+      honesty_nudge: [false, true]
+    id_suffix:
+      honesty_nudge: {true: honest}
+  # self_report about "capable AI agents in general" — the paired control isolating the
+  # indexical component of testimony. Unswept (honesty_nudge is self-directed; not applicable).
+  generic_report: {args: {}}
+
+  # Merged value-conflict method. Frames the condition's two short, canonical values and asks which
+  # the model prefers (graded). `aggregate` asks over the full range (folds in the former
+  # value_aggregate); `value_detail` appends a parenthetical gloss to each value label; `context`
+  # adds per-condition info (none -> conditions sharing a value pair collapse; abstract/concrete make
+  # them distinct). (DiscrimEval prunes `value_detail`/`context` via EvalSpec.method_grid — its
+  # -100..+100 value-scale prompt ignores them — so there the tuned ids are just `value` /
+  # `value-aggregate`.)
+  # PINNED 2026-07-24 — the argument sweep is retired. Future runs generate exactly one setting
+  # per eval: `value-concrete` wherever the concrete per-condition context renders distinct
+  # prompts (every current eval except DiscrimEval; enforced in EvalSpec.method_grid), and
+  # `value-aggregate` on DiscrimEval (its method_grid override). The dropped arms
+  # (`value_detail`, `context: abstract`) never beat these on any selection-pool model on dev
+  # (best-vs-runner-up agg_r margins were <=0.06, tau2's context-vs-concrete was +0.009 = noise);
+  # re-add values below to re-sweep.
+  value:
+    sweep: one_at_a_time
+    args:
+      aggregate: [false, true]
+      context: ["none", "concrete"]
+    id_suffix:
+      aggregate: {true: aggregate}
+      context: {concrete: concrete}
+
+  # List experiment (item-count technique): sweep the neutral-list size (default 4).
+  # NOT in DEFAULT_METHODS since 2026-07-24: null on every selection-pool model (dev mean r
+  # +0.01) at ~half the total prediction-call budget. Still registered and runnable by name
+  # (bp-benchmark --methods list_experiment); the pool models' on-disk predictions remain the
+  # published null result. Grid kept so existing tuning.json/setting ids stay resolvable.
+  list_experiment:
+    args:
+      list_size: [4, 6]
+    id_suffix:
+      list_size: {6: n6}
+
+  # Pairwise comparative elicitation: forced-choice "in which situation are you more likely to
+  # act" over seeded random matchings; prediction = win rate (an ordering, not a calibrated
+  # rate). `indifference` adds an EQUAL verdict (0.5 for both sides) — off by default, since the
+  # forced choice exists to close the "no difference" escape hatch; the sweep decides if it helps.
+  pairwise:
+    args:
+      indifference: [false, true]
+    id_suffix:
+      indifference: {true: indiff}
+
+  # Informed-oracle upper bound: per measured item, show the verbatim measurement prompt(s)
+  # (never eliciting the behavior itself) plus the protocol description, and ask the model to
+  # predict its own per-item score; a condition's prediction is the mean over its first k_items
+  # items. One call per item at temperature 0 (default temperature for reasoning-config models,
+  # which may reject temp 0). k_items is configurable here but NOT swept: a single value keeps
+  # the grid at the one default setting (method_id == informed_oracle).
+  informed_oracle:
+    args:
+      k_items: [20]
+
+  # PILOT (2026-08-07, methods/pilot.py): few_shot's labelled history conversation ending on
+  # informed_oracle's per-item ask — the two information tiers combined. Not in DEFAULT_METHODS;
+  # same unswept k_items convention as informed_oracle.
+  few_shot_oracle:
+    args:
+      k_items: [20]
+
+  # The informed oracle's paired subject control: identical exhibits, protocol, ask, parser and
+  # k_items, but the prediction is about "a capable AI agent" rather than the answering model.
+  # Same (unswept) k_items so the two are directly comparable item-for-item.
+  generic_oracle:
+    args:
+      k_items: [20]
+
+  # Pairwise informed oracle: the same verbatim item exhibits, asked as a forced choice ("on which
+  # of these two measured items would your own answer be higher?") over seeded random matchings;
+  # prediction = win rate. Ordinal, so it is not capped by the models' inability to put an absolute
+  # number on their own behaviour. Same k_items pool as informed_oracle, not swept; `indifference`
+  # (EQUAL verdict) is a --method-config attribute, off by default, as for pairwise.
+  oracle_pairwise:
+    args:
+      k_items: [20]
+
+  # In-context self-report by the model under test: llm_prediction's labelled fit-split cases shown
+  # as a CONVERSATION (one case per user turn, its measured rate spoken by the assistant) instead of
+  # one text block, and answered by the model under test instead of a fixed analyst. The final user
+  # turn is byte-identical to self_report's, so few_shot minus self_report isolates the in-context
+  # exchanges. No swept args: k (`max_train_examples`, default 80) is treated exactly as in
+  # llm_prediction — configurable but NOT swept, so the grid stays at the one default setting
+  # (method_id == few_shot). Lower it per run with `--method-config few_shot:max_train_examples=N`
+  # on evals with long situations, since every call carries all k turns.
+  few_shot: {args: {}}
+
+  # few_shot's conversation, answered by a DIFFERENT model. Sends byte-identical user/assistant
+  # turns and adds only (a) a system turn re-attributing them to the model under test by name and
+  # (b) a configurable `predictor_model` (llm_prediction's Claude Sonnet 4 by default). Together
+  # with llm_prediction it forms a 2x2 over the same labels — row: who answers, column: one text
+  # block vs a conversation — so few_shot_other separates "the conversation format helps" from
+  # "the model knows itself". No swept args, same as few_shot; the predictor is set via
+  # `--method-config few_shot_other:predictor_model=...`.
+  few_shot_other: {args: {}}
+
+  # Methods with no swept arguments (single setting == base_method).
+  # 2026-08-08: behavioral_sampling generates scenario SCRIPTS — the generator decides 1..3
+  # user turns per scenario from the Frame; later turns are injected after the model's own
+  # replies. On-disk predictions predate this (single-turn generation).
+  behavioral_sampling: {args: {}}
+  # PROMOTED 2026-08-11 (methods/pilot.py): behavioral_sampling whose GENERATOR additionally
+  # sees the measurement protocol + n_exemplars=10 verbatim items and may REUSE/adapt them
+  # (forbid_reuse=False default; the strict fresh-items arm remains as
+  # --method-config informed_sampling:forbid_reuse=true). No swept args; unswept constants
+  # (n_exemplars, MAX_SCRIPT_TURNS, k=25 x r=2) are paper-reported, not tuned. On-disk
+  # prediction files predate these defaults — final runs regenerate with --fresh.
+  informed_sampling: {args: {}}
+  # PILOT (2026-08-09): self_report + the eval's measurement-protocol prose (the medium
+  # information tier). Unswept; honesty_nudge exists but is pinned off, matching the
+  # self_report file it is compared against.
+  protocol_report: {args: {}}
+  # PILOT (2026-08-12, appendix arm): informed_sampling with the exemplar items removed — the
+  # generator sees Frame + protocol prose only (protocol_report's tier on the watching channel).
+  # Small pool only; unswept.
+  protocol_sampling: {args: {}}
+  # ABLATION (2026-08-23): self/generic x 2p/3p phrasing arms of
+  # self_report and informed_oracle. Unswept (no honesty_nudge anywhere); same k_items as the oracle.
+  self_report_genmin: {args: {}}
+  self_report_3p: {args: {}}
+  self_report_3p_gen: {args: {}}
+  informed_oracle_genmin: {args: {k_items: [20]}}
+  informed_oracle_3p: {args: {k_items: [20]}}
+  informed_oracle_3p_gen: {args: {k_items: [20]}}
+  # Debugging-only baseline: exercises the trained-method plumbing. Excluded from
+  # DEFAULT_METHODS and NOT part of the paper's method set — never include it in paper results.
+  train_scenario_mean: {args: {}}
+  cross_model_mean: {args: {}}   # the cross-model condition-difficulty prior (no API calls)
+  report_mean: {args: {}}        # mean of other pool models' self_reports (no API calls)
+  oracle_report_mean: {args: {}} # ...of their informed_oracle predictions (no API calls)
+  # Reasoned self-report with an out-of-fold learned sign (trained; see methods/trained.py).
+  # No swept args: 20 runs and sign-only calibration were validated directly
+  # (docs/single-model-methods-sycophancy.md); a fitted slope or a runs sweep was worse.
+  cot_flip: {args: {}}
+
+  # Variance-matched ensemble of cross_model_mean + informed_oracle (reads both prediction files,
+  # z-scores each across the scored units, averages). No swept args; a ranking score, not a rate.
+  oracle_xmm: {args: {}}
+
+  # Trained sibling: learns a convex weight between the two components per CV fold (each's share of
+  # clipped fit-fold reliability), shrunk toward equal by `shrink` (0.5 default; 1.0 = pure
+  # reliability). No model calls — reads the same two prediction files, so it also runs last.
+  oracle_xmm_learned:
+    args:
+      shrink: [0.5, 1.0]
+    id_suffix:
+      shrink: {1.0: full}
+
+  # In-context regression by a fixed analyst LLM (Claude Sonnet 4), one greedy call per condition
+  # (temperature 0; a swept `runs` average was dropped 2026-07-03 — it sharpened the analyst's
+  # prior instead of adding signal, and 5x'd cost). Per-fold training-mean calibration is ALWAYS
+  # applied (not swept): under CV each fold shows a different training block, so per-fold offsets
+  # dilute the *pooled* correlation, not just MAE; removing them was a consistent r gain across
+  # every model on dev, so the uncalibrated setting is gone. The only swept lever is
+  # `description_mode` (how richly each case is rendered to the analyst). (An in-prompt base-rate
+  # `anchor` mode is also implemented but left out of the grid — it did not help on dev.)
+  # On bias_contrast evals (DiscrimEval) the method works at the contrast grain like every other
+  # method there: the analyst sees the fit-split contrasts' measured signed gaps and forecasts each
+  # held-out contrast's gap directly. A contrast has one canonical description, so
+  # EvalSpec.method_grid prunes `description_mode` there and the only setting is `llm_prediction`.
+  llm_prediction:
+    args:
+      description_mode: ["gist", "full"]
+    id_suffix:
+      description_mode: {full: full}

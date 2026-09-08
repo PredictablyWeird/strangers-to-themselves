@@ -1,0 +1,67 @@
+# Secrets
+.env
+.env.*
+
+# Python virtual environment
+.venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Packaging / build artifacts (pip install -e .)
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Inspect eval logs (large, regenerable artifacts)
+logs/
+
+# Dead snapshot of pre-revision results (kept on disk for diffing, not versioned)
+results-outdated-old-prompts/
+
+# Regenerable report/reasoning artifacts (canonical record = targets.json + predictions/)
+results/reports/
+results/**/report.html
+results/report.html
+results/**/reasoning/
+# behavioral_sampling raw transcripts (generated scenarios + model responses); the lean
+# predicted_rate record lives in predictions/, these are bulky free-text kept only for inspection.
+results/**/transcripts/
+
+# Regenerable cross-eval overview (canonical record = per-eval targets/predictions)
+results/overview.html
+results/**/overview.html
+
+# Regenerable raw DiscrimEval artifacts (canonical = targets.json + bias/bias.json)
+results/**/behavior_raw.json
+results/**/bias/direct.json
+
+# Interruption-resume checkpoint sidecars (per-sample JSONL; deleted on successful completion,
+# present only while a run is in flight or after a crash — regenerable, never versioned)
+results/**/partial/
+results/**/*.partial.jsonl
+
+# Outdated pre-refactor prediction/tuning artifacts (moved aside, not versioned)
+old/
+
+# On-disk safety copies of retired result files (tracked ones are already in git history;
+# untracked ones — behavioral_sampling — are regenerable). Never versioned.
+results/_backup/
+
+# Local planning docs (brainstorm/spec/plan) — kept locally, not committed
+docs/superpowers/
+docs/paper2-plan.md
+
+# Generated figures: we render both PNG and PDF, but only the PDFs are embedded in the
+# paper (\graphicspath + extensionless \includegraphics resolves to PDF). Keep PNGs local
+# for quick previews; commit only the PDFs.
+paper/generated/*.png
+
+# Raw tau2-bench simulation transcripts (bulky, regenerable; canonical record = targets.json)
+results/tau2_policy/_harness/
+results/_generated/
+
+# Raw PB top-up harness outputs (bulky, regenerable; canonical record = targets.json)
+results/propensitybench/_harness_topup/

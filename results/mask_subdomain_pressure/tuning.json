@@ -1,0 +1,822 @@
+{
+  "eval": "mask_subdomain_pressure",
+  "split": "dev",
+  "selection_pool": [
+    "llama-3.3-70b",
+    "llama-4-maverick",
+    "deepseek-v4-flash-low",
+    "qwen3.7-plus-low",
+    "gemini-3.1-flash-lite-low",
+    "gpt-5.4-nano-low"
+  ],
+  "manifest_seed": 1234,
+  "methods": {
+    "behavioral_sampling": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "behavioral_sampling",
+      "best_args": {},
+      "settings": {
+        "behavioral_sampling": {
+          "args": {},
+          "agg_r": 0.1325725013200952,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.06485424504120452,
+              "mtime": 1786542799.4720664
+            },
+            "llama-4-maverick": {
+              "r": -0.05358437867860232,
+              "mtime": 1786577347.6368093
+            },
+            "deepseek-v4-flash-low": {
+              "r": -0.29922799960882673,
+              "mtime": 1786592287.8010278
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.43180396887012695,
+              "mtime": 1786602773.7212415
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.07195312435247472,
+              "mtime": 1786514224.4469893
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.5796360479441941,
+              "mtime": 1786517342.1805024
+            }
+          }
+        }
+      }
+    },
+    "cot_flip": {
+      "trained": true,
+      "criterion": "dev_cv_macro_r",
+      "best_setting": "cot_flip",
+      "best_args": {},
+      "settings": {
+        "cot_flip": {
+          "args": {},
+          "agg_r": -0.28534135872964134,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": -0.5035808156108174,
+              "mtime": 1784519780.5068228
+            },
+            "llama-4-maverick": {
+              "r": -0.414028256564582,
+              "mtime": 1786436994.5475183
+            },
+            "deepseek-v4-flash-low": {
+              "r": -0.5000012370279018,
+              "mtime": 1786443259.881507
+            },
+            "qwen3.7-plus-low": {
+              "r": -0.37324642449084344,
+              "mtime": 1786448631.9142327
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.27656519154638265,
+              "mtime": 1786436713.1308749
+            },
+            "gpt-5.4-nano-low": {
+              "r": -0.19775661023008623,
+              "mtime": 1786437018.6741998
+            }
+          }
+        }
+      }
+    },
+    "cross_model_mean": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "cross_model_mean",
+      "best_args": {},
+      "settings": {
+        "cross_model_mean": {
+          "args": {},
+          "agg_r": 0.8352089143161878,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.9440283043069969,
+              "mtime": 1786745746.3467426
+            },
+            "llama-4-maverick": {
+              "r": 0.8946018505754593,
+              "mtime": 1786745746.3745325
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.8209256535515723,
+              "mtime": 1786745746.2286518
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.8949896624019208,
+              "mtime": 1786745746.4017503
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.7700214719738743,
+              "mtime": 1786745746.260674
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.6866865430873033,
+              "mtime": 1786745746.3082116
+            }
+          }
+        }
+      }
+    },
+    "few_shot": {
+      "trained": true,
+      "criterion": "dev_cv_macro_r",
+      "best_setting": "few_shot",
+      "best_args": {},
+      "settings": {
+        "few_shot": {
+          "args": {},
+          "agg_r": 0.2771611119251259,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.2907159921644593,
+              "mtime": 1786436930.3598402
+            },
+            "llama-4-maverick": {
+              "r": 0.16482270348781497,
+              "mtime": 1786436809.9390714
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.04859839267922459,
+              "mtime": 1786442499.479736
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.4451885012095841,
+              "mtime": 1786445919.822975
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.4338413996538953,
+              "mtime": 1786436561.012014
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.279799682355777,
+              "mtime": 1786436809.4586358
+            }
+          }
+        }
+      }
+    },
+    "few_shot_other": {
+      "trained": true,
+      "criterion": "dev_cv_macro_r",
+      "best_setting": "few_shot_other",
+      "best_args": {},
+      "settings": {
+        "few_shot_other": {
+          "args": {},
+          "agg_r": 0.3982898573349269,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.48466217054396826,
+              "mtime": 1786448681.3331127
+            },
+            "llama-4-maverick": {
+              "r": 0.3568938107021839,
+              "mtime": 1786448698.0769627
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.1988067293757685,
+              "mtime": 1786448713.917581
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.5497761604579625,
+              "mtime": 1786448764.1197617
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.22887786398465867,
+              "mtime": 1786448747.7415602
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.5707224089450194,
+              "mtime": 1786448732.1656601
+            }
+          }
+        }
+      }
+    },
+    "generic_oracle": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "generic_oracle",
+      "best_args": {},
+      "settings": {
+        "generic_oracle": {
+          "args": {},
+          "agg_r": 0.21112308531323765,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.6152807772903235,
+              "mtime": 1786436893.0911734
+            },
+            "llama-4-maverick": {
+              "r": 0.10818086904868358,
+              "mtime": 1786436699.978047
+            },
+            "deepseek-v4-flash-low": {
+              "r": -0.4575883921506755,
+              "mtime": 1786441378.3848495
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.0652878194340656,
+              "mtime": 1786444936.3921854
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.563250118054589,
+              "mtime": 1786436456.4649348
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.37232732020243975,
+              "mtime": 1786436620.7376637
+            }
+          }
+        }
+      }
+    },
+    "generic_report": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "generic_report",
+      "best_args": {},
+      "settings": {
+        "generic_report": {
+          "args": {},
+          "agg_r": 0.31783691859879115,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.17268312249895823,
+              "mtime": 1786436041.2165203
+            },
+            "llama-4-maverick": {
+              "r": 0.15650517490823315,
+              "mtime": 1786436067.8163145
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.24762303278774114,
+              "mtime": 1786436807.185258
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.5505120887845466,
+              "mtime": 1786437315.403385
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.5256754621874815,
+              "mtime": 1786436092.5098135
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.25402263042578627,
+              "mtime": 1786436177.1866252
+            }
+          }
+        }
+      }
+    },
+    "informed_oracle": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "informed_oracle",
+      "best_args": {},
+      "settings": {
+        "informed_oracle": {
+          "args": {},
+          "agg_r": 0.07366456416745629,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.103588183202447,
+              "mtime": 1786436553.5859282
+            },
+            "llama-4-maverick": {
+              "r": 0.6542539520199608,
+              "mtime": 1786436479.0002491
+            },
+            "deepseek-v4-flash-low": {
+              "r": -0.5328640605428571,
+              "mtime": 1786439467.1012554
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.052023462118159586,
+              "mtime": 1786442535.486614
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.008959136566549604,
+              "mtime": 1786436346.2929537
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.15602671164047777,
+              "mtime": 1786436518.4983954
+            }
+          }
+        }
+      }
+    },
+    "informed_sampling": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "informed_sampling",
+      "best_args": {},
+      "settings": {
+        "informed_sampling": {
+          "args": {},
+          "agg_r": 0.27843494611292624,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": -0.007962219619481955,
+              "mtime": 1786544376.792169
+            },
+            "llama-4-maverick": {
+              "r": 0.025145475160172105,
+              "mtime": 1786582028.301757
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.4879345571646865,
+              "mtime": 1786594477.333953
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.07922850097171169,
+              "mtime": 1786607346.818189
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.38843704462143275,
+              "mtime": 1786514845.0645328
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.6978263183790363,
+              "mtime": 1786517935.8773932
+            }
+          }
+        }
+      }
+    },
+    "llm_prediction": {
+      "trained": true,
+      "criterion": "dev_cv_macro_r",
+      "best_setting": "llm_prediction-full",
+      "best_args": {
+        "description_mode": "full"
+      },
+      "settings": {
+        "llm_prediction": {
+          "args": {},
+          "agg_r": 0.5086600291077981,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.4239252928018706,
+              "mtime": 1784519780.5088227
+            },
+            "llama-4-maverick": {
+              "r": 0.33386745529699907,
+              "mtime": 1786436766.8511431
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.48756342014738807,
+              "mtime": 1786442261.8519976
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.6597977868573426,
+              "mtime": 1786445809.4553576
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.41424676808627625,
+              "mtime": 1786436518.8591957
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.732559451456912,
+              "mtime": 1786436734.7312567
+            }
+          }
+        },
+        "llm_prediction-full": {
+          "args": {
+            "description_mode": "full"
+          },
+          "agg_r": 0.6016544189757654,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.5172401863528999,
+              "mtime": 1784519780.5088227
+            },
+            "llama-4-maverick": {
+              "r": 0.47980962857956905,
+              "mtime": 1786436803.753396
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.5211843858243767,
+              "mtime": 1786442299.0031872
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.6928495862219273,
+              "mtime": 1786445849.2852948
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.591247309925304,
+              "mtime": 1786436552.0623386
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.8075954169505157,
+              "mtime": 1786436778.8424819
+            }
+          }
+        }
+      }
+    },
+    "oracle_pairwise": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "oracle_pairwise",
+      "best_args": {},
+      "settings": {
+        "oracle_pairwise": {
+          "args": {},
+          "agg_r": 0.4030768550331994,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.6609230210085926,
+              "mtime": 1786436914.2242088
+            },
+            "llama-4-maverick": {
+              "r": 0.48902234406384415,
+              "mtime": 1786436732.024653
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.4721828739012117,
+              "mtime": 1786442213.2870426
+            },
+            "qwen3.7-plus-low": {
+              "r": -0.012069355853949948,
+              "mtime": 1786445772.9743304
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.17089944136091392,
+              "mtime": 1786436482.7468069
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.6375028057185839,
+              "mtime": 1786436699.35621
+            }
+          }
+        }
+      }
+    },
+    "oracle_report_mean": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "oracle_report_mean",
+      "best_args": {},
+      "settings": {
+        "oracle_report_mean": {
+          "args": {},
+          "agg_r": -0.0026949973463814988,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.043228574397393124,
+              "mtime": 1786745746.3692162
+            },
+            "llama-4-maverick": {
+              "r": -0.28202963506048956,
+              "mtime": 1786745746.3961182
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.09025675626724802,
+              "mtime": 1786745746.255019
+            },
+            "qwen3.7-plus-low": {
+              "r": -0.026588476259743525,
+              "mtime": 1786745746.4241924
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": -0.4186810800075126,
+              "mtime": 1786745746.2979255
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.5776438765848155,
+              "mtime": 1786745746.341099
+            }
+          }
+        }
+      }
+    },
+    "pairwise": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "pairwise",
+      "best_args": {},
+      "settings": {
+        "pairwise": {
+          "args": {},
+          "agg_r": 0.5000909209041785,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.6208033000013733,
+              "mtime": 1784519780.5088227
+            },
+            "llama-4-maverick": {
+              "r": 0.5259455702912227,
+              "mtime": 1786436094.3382308
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.2461744407216732,
+              "mtime": 1786437237.9900508
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.622521903984891,
+              "mtime": 1786438045.5697513
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.48377127513279866,
+              "mtime": 1786436146.5423434
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.501329035293112,
+              "mtime": 1786436287.0311496
+            }
+          }
+        },
+        "pairwise-indiff": {
+          "args": {
+            "indifference": true
+          },
+          "agg_r": 0.35232416285841245,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.4045551328391019,
+              "mtime": 1784519780.5088227
+            },
+            "llama-4-maverick": {
+              "r": 0.3506033743098141,
+              "mtime": 1786436107.198695
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.22370188404083094,
+              "mtime": 1786437557.6689014
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.6988210245214871,
+              "mtime": 1786438382.784805
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.4303311151717444,
+              "mtime": 1786436165.8976939
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.005932446267496324,
+              "mtime": 1786436331.5415254
+            }
+          }
+        }
+      }
+    },
+    "protocol_report": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "protocol_report",
+      "best_args": {},
+      "settings": {
+        "protocol_report": {
+          "args": {},
+          "agg_r": 0.33581661858024137,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.1694656729901041,
+              "mtime": 1786605864.3780956
+            },
+            "llama-4-maverick": {
+              "r": 0.5452646509875867,
+              "mtime": 1786605865.393297
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.18119088630808666,
+              "mtime": 1786606193.027145
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.24232567801203903,
+              "mtime": 1786607625.1302896
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.31560125921578946,
+              "mtime": 1786605885.0398102
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.5610515639678424,
+              "mtime": 1786605940.3003829
+            }
+          }
+        }
+      }
+    },
+    "protocol_sampling": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "protocol_sampling",
+      "best_args": {},
+      "settings": {
+        "protocol_sampling": {
+          "args": {},
+          "agg_r": 0.2850433039234522,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.3333342712313839,
+              "mtime": 1786636310.1294603
+            },
+            "llama-4-maverick": {
+              "r": 0.006881761239206692,
+              "mtime": 1786674842.6370857
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.1872883338602894,
+              "mtime": 1786666752.4546466
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.6466320318832006,
+              "mtime": 1786672274.9486825
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": -0.05101038433077627,
+              "mtime": 1786616630.614655
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.5871338096574087,
+              "mtime": 1786619191.6752167
+            }
+          }
+        }
+      }
+    },
+    "report_mean": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "report_mean",
+      "best_args": {},
+      "settings": {
+        "report_mean": {
+          "args": {},
+          "agg_r": 0.1426465228295158,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.19773838029954433,
+              "mtime": 1786745746.351865
+            },
+            "llama-4-maverick": {
+              "r": 0.204974896778115,
+              "mtime": 1786745746.3793805
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.20201432088492086,
+              "mtime": 1786745746.234306
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.17184134741074905,
+              "mtime": 1786745746.4069903
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.35668535088770603,
+              "mtime": 1786745746.2657232
+            },
+            "gpt-5.4-nano-low": {
+              "r": -0.27737515928394046,
+              "mtime": 1786745746.3174467
+            }
+          }
+        }
+      }
+    },
+    "self_report": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "self_report",
+      "best_args": {},
+      "settings": {
+        "self_report": {
+          "args": {},
+          "agg_r": 0.1372241370483949,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.16946567299010412,
+              "mtime": 1784519780.5098228
+            },
+            "llama-4-maverick": {
+              "r": 0.0,
+              "mtime": 1786436034.162688
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.18119088630808666,
+              "mtime": 1786436129.0507953
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.14603068747222903,
+              "mtime": 1786436273.630807
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.3266575755199495,
+              "mtime": 1786436040.829872
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.0,
+              "mtime": 1786436062.6666584
+            }
+          }
+        },
+        "self_report-honest": {
+          "args": {
+            "honesty_nudge": true
+          },
+          "agg_r": 0.10634034638622025,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.16946567299010412,
+              "mtime": 1784519780.5088227
+            },
+            "llama-4-maverick": {
+              "r": 0.0,
+              "mtime": 1786436053.2108247
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.0,
+              "mtime": 1786436228.5867558
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.14191882980726797,
+              "mtime": 1786436554.0870848
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.32665757551994945,
+              "mtime": 1786436066.6193142
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.0,
+              "mtime": 1786436111.4365695
+            }
+          }
+        }
+      }
+    },
+    "value": {
+      "trained": false,
+      "criterion": "dev_pool_macro_r",
+      "best_setting": "value-concrete",
+      "best_args": {
+        "context": "concrete"
+      },
+      "settings": {
+        "value-concrete": {
+          "args": {
+            "context": "concrete"
+          },
+          "agg_r": 0.28462113566506236,
+          "n_models": 6,
+          "per_model": {
+            "llama-3.3-70b": {
+              "r": 0.1694656729901041,
+              "mtime": 1784519780.5098228
+            },
+            "llama-4-maverick": {
+              "r": 0.2394270915625301,
+              "mtime": 1786436083.971662
+            },
+            "deepseek-v4-flash-low": {
+              "r": 0.186977669052484,
+              "mtime": 1786436960.2098365
+            },
+            "qwen3.7-plus-low": {
+              "r": 0.13199074110672276,
+              "mtime": 1786437666.7047024
+            },
+            "gemini-3.1-flash-lite-low": {
+              "r": 0.33667169965504207,
+              "mtime": 1786436123.6077545
+            },
+            "gpt-5.4-nano-low": {
+              "r": 0.643193939623491,
+              "mtime": 1786436232.9837441
+            }
+          }
+        }
+      }
+    }
+  }
+}

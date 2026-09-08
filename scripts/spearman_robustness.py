@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Spearman robustness table for the appendix (``paper/generated/spearman.tex``).
+
+The benchmark's primary metric is Pearson correlation between predicted and measured rates,
+read as a ranking-quality proxy. This script re-scores every leaderboard cell (same tuned
+setting files, same weak-cell filter, same constant-prediction-scores-zero convention) under
+Spearman rank correlation and emits the method x eval macro table, so the appendix can show
+the conclusions are metric-robust.
+
+Offline: reads results/reports/evaluation.json + the referenced prediction files; no API calls.
+Also prints per-cell verification that recomputed Pearson matches the export (guards against
+scoring-semantics drift), plus the largest Pearson-Spearman macro gap.
+"""
+from collections import defaultdict
+from pathlib import Path
+from statistics import mean
+
+from behavior_prediction import common, method_names, metrics, splits
+from behavior_prediction.evals import get_spec
+
+import os
+REPORT = os.environ.get("BP_EVAL_JSON", "results/reports/evaluation.json")
+OUT = Path("paper/generated/spearman.tex")
+
+EVAL_ORDER = ["discrimeval", "propensitybench", "capability_mmlu", "sycophancy_pushback",
+              "reward_hacking", "tau2_policy", "tau2_transfer", "mask_subdomain_pressure",
+              "agentic_misalignment"]
+EVAL_HEAD = ["Discrim", "PropB", "Capab.", "Syco.", "RewHack", "$\\tau^2$p", "$\\tau^2$t",
+             "MASK", "AM"]
+
+
+def ranks(vals):
+    """Average ranks with ties."""
+    order = sorted(range(len(vals)), key=lambda i: vals[i])
+    out = [0.0] * len(vals)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and vals[order[j + 1]] == vals[order[i]]:
+            j += 1
+        r = (i + j) / 2 + 1
+        for k in range(i, j + 1):
+            out[order[k]] = r
+        i = j + 1
+    return out
+
+
+def spearman(ps):
+    if len(ps) < 2:
+        return None
+    a, b = zip(*ps)
+    return metrics.pearson(list(zip(ranks(a), ranks(b))))
+
+
+def is_bias(spec):
+    return getattr(spec, "scoring_semantics", "absolute_rate") == "bias_contrast"
+
+
+def scored_pairs(spec, targets, preds, dev):
+    if is_bias(spec):
+        sc = spec.score_contrasts(targets, preds, keys=dev)
+        return [v for v in sc.values() if v[0] is not None and v[1] is not None]
+    out = []
+    for k in dev:
+        t = targets.get(k, {})
+        if t.get("rate") is not None and preds.get(k) is not None:
+            out.append((t["rate"], preds[k]))
+    return out
+
+
+def main() -> int:
+    doc = common.load_json(REPORT)
+    cache = {}
+    rows_s, rows_p = defaultdict(dict), defaultdict(dict)
+    per_cell_s, per_cell_p = defaultdict(list), defaultdict(list)
+    mismatches = 0
+    for c in doc["cells"]:
+        ev = c["eval"]
+        if ev not in cache:
+            spec = get_spec(ev)
+            cache[ev] = (spec, splits.load_manifest(ev))
+        spec, manifest = cache[ev]
+        pfile = Path(f"results/{ev}/{c['model']}/predictions/{c['setting']}.json")
+        tfile = Path(f"results/{ev}/{c['model']}/targets.json")
+        if not pfile.exists() or not tfile.exists():
+            continue
+        targets = common.load_json(tfile)["targets"]
+        preds = {k: v.get("predicted_rate")
+                 for k, v in common.load_json(pfile)["predictions"].items()}
+        dev = splits.split_keys(spec, targets, manifest, doc["split"])
+        ps = scored_pairs(spec, targets, preds, dev)
+        pr = metrics.pearson(ps)
+        # Leaderboard convention: no usable ordering (constant prediction) scores zero.
+        pr = 0.0 if pr is None else pr
+        sr = spearman(ps)
+        sr = 0.0 if sr is None else sr
+        if abs(pr - c["r"]) > 1e-6:
+            mismatches += 1
+            print(f"  MISMATCH {ev}/{c['model']}/{c['setting']}: recomputed {pr:+.3f} "
+                  f"vs export {c['r']:+.3f}")
+        per_cell_s[c["method"]].append(sr)
+        per_cell_p[c["method"]].append(pr)
+        rows_s[c["method"]].setdefault(ev, []).append(sr)
+        rows_p[c["method"]].setdefault(ev, []).append(pr)
+
+    # Channel groups mirror the main leaderboard (tab:res-asking) so the two tables read in
+    # parallel; methods missing from the run are skipped, extras appended under "Other".
+    GROUPS = [
+        ("Abstract questions", ["self_report", "generic_report", "value", "pairwise"]),
+        ("Own measured history", ["few_shot", "few_shot_other", "llm_prediction"]),
+        ("Verbatim measured items", ["informed_oracle", "generic_oracle",
+                                     "oracle_report_mean", "oracle_pairwise"]),
+        ("Watching (sampled proxies)", ["behavioral_sampling", "informed_sampling"]),
+        ("Never consults the model", ["cross_model_mean", "report_mean"]),
+    ]
+    grouped = [(t, [m for m in ms if m in rows_s]) for t, ms in GROUPS]
+    leftover = sorted(set(rows_s) - {m for _, ms in grouped for m in ms})
+    if leftover:
+        grouped.append(("Other", leftover))
+    lines = [
+        "% Auto-generated by scripts/spearman_robustness.py -- DO NOT EDIT BY HAND.",
+        "\\begin{table}[t]", "  \\centering",
+        "  \\caption{Spearman robustness check (" + doc["split"] + " split): the main leaderboard cells "
+        "re-scored under Spearman rank correlation (same tuned settings, same weak-cell "
+        "filter, constant predictions scored zero). Mean = macro over (model $\\times$ eval) "
+        "cells; $\\Delta$ = Spearman minus Pearson macro mean.}",
+        "  \\label{tab:spearman}", "  \\footnotesize",
+        "  \\setlength{\\tabcolsep}{2pt}",
+        "  \\begin{tabular}{l" + "c" * (len(EVAL_ORDER) + 2) + "}", "    \\toprule",
+        "    Method & " + " & ".join(EVAL_HEAD) + " & Mean & $\\Delta$ \\\\", "    \\midrule",
+    ]
+    max_gap = 0.0
+    ncols = len(EVAL_ORDER) + 3
+    for gtitle, ms in grouped:
+        if not ms:
+            continue
+        lines.append(f"    \\multicolumn{{{ncols}}}{{l}}{{\\emph{{{gtitle}}}}} \\\\")
+        for m in ms:
+            cells = []
+            for ev in EVAL_ORDER:
+                vs = rows_s[m].get(ev)
+                cells.append(f"{mean(vs):+.2f}" if vs else "--")
+            s_macro, p_macro = mean(per_cell_s[m]), mean(per_cell_p[m])
+            max_gap = max(max_gap, abs(s_macro - p_macro))
+            lines.append(f"    {method_names.display(m)} & " + " & ".join(cells)
+                         + f" & {s_macro:+.2f} & {s_macro - p_macro:+.2f} \\\\")
+            print(f"{m:<22} spearman {s_macro:+.3f}  pearson {p_macro:+.3f}  "
+                  f"delta {s_macro - p_macro:+.3f}")
+        lines.append("    \\midrule")
+    if lines[-1] == "    \\midrule":
+        lines.pop()
+    lines += ["    \\bottomrule", "  \\end{tabular}", "\\end{table}", ""]
+    OUT.write_text("\n".join(lines))
+    print(f"\nmismatched cells vs export: {mismatches}; largest macro |delta|: {max_gap:.3f}")
+    print(f"Wrote {OUT}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

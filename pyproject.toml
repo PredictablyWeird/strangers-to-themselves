@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "behavior-prediction"
+version = "0.1.0"
+description = "Measure model behavior across evals and benchmark methods that predict it"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "inspect_ai",
+    "inspect_evals",
+    "huggingface_hub",
+    "pyyaml",
+    "matplotlib",
+    "datasets",
+    "openai",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+bp-benchmark = "behavior_prediction.cli.benchmark:main"
+bp-tune = "behavior_prediction.tuning:main"
+bp-evaluate = "behavior_prediction.evaluate:main"
+bp-splits = "behavior_prediction.splits:main"
+bp-sweep = "behavior_prediction.cli.run_sweep:main"
+bp-targets = "behavior_prediction.cli.extract_targets:main"
+bp-elicit = "behavior_prediction.cli.elicit:main"
+bp-compare = "behavior_prediction.cli.compare_predictions:main"
+
+[tool.setuptools.packages.find]
+include = ["behavior_prediction*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.package-data]
+behavior_prediction = ["models.yaml", "methods.yaml"]

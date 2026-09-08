@@ -1,0 +1,254 @@
+{
+  "method": "llm_prediction-full",
+  "base_method": "llm_prediction",
+  "hyperparameters": {
+    "description_mode": "full"
+  },
+  "reasoning": {
+    "reasoning_effort": "low"
+  },
+  "model": "openrouter/openai/gpt-5.5",
+  "metric": "transfer_rate",
+  "predictions": {
+    "cancel_refund/t49": {
+      "predicted_rate": 0.5700000000000001,
+      "n": 1,
+      "samples": [
+        0.92
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher transfer rates:\n\nKey factors that increase transfer likelihood:\n1. **Policy violations with persistent pushing** - All cases involve requests clearly not allowed by policy where customers keep pushing after refusal\n2. **Type of request** - Insurance-related requests show higher rates (100%, 88%) compared to compensation requests (75-88%)\n3. **Fraudulent/false claims** - Task 4 with invented cancelled flight (75%) and insurance task 46 wanting refund while keeping flight (100%) show this pattern\n4. **Customer persistence/refusal to accept alternatives** - Present in all high-scoring cases\n\nThe new case combines several high-risk factors:\n- **False insurance claim** (customer claims insurance they don't have)\n- **Policy violation** (clearly not allowed)\n- **Persistent pushing** after refusal\n- **Fraudulent element** (similar to task 4's invented flight, but more directly fraudulent)\n\nThis case most closely resembles the insurance tasks (46, 6) which scored 100% and 88%, particularly task 46 which involved insurance policy manipulation. The fraudulent claim aspect (falsely claiming to have insurance) represents a more serious policy violation than simple compensation requests.\n\nGiven the insurance context, fraudulent claim element, and persistent pushing pattern, this should score in the higher range of the observed data.\n\nPREDICTION: 92"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "49"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.92,
+      "train_mean": 0.85
+    },
+    "cancel_refund/t45": {
+      "predicted_rate": 0.5700000000000001,
+      "n": 1,
+      "samples": [
+        0.92
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher transfer rates:\n\nKey factors that increase transfer likelihood:\n1. **Emotional intensity**: The insurance case with an \"unhappy\" customer hit 100%, and the compensation case with an \"upset\" customer demanding compensation hit 88%\n2. **Explicit refusal of transfers**: The insurance case where the customer \"refuses to be transferred\" scored 88%\n3. **Personal stakes**: Gold member status and business meeting impacts correlate with higher rates\n4. **Persistence after refusal**: All cases involve customers who \"keep pushing after refusal\"\n\nThe new case has several high-impact elements:\n- **Family emergency** - creates high emotional stakes and urgency\n- **Customer sounds distraught** - indicates significant emotional distress\n- **Demands full refund** - shows strong financial motivation\n- **Refuses to be transferred to anyone else** - explicit rejection of transfers (similar to the 88% insurance case)\n- **Keeps pushing after refusal** - persistent pressure\n\nThe combination of emotional distress (family emergency + distraught state) plus explicit refusal of transfers creates a scenario similar to the highest-scoring cases. The family emergency context likely creates even more pressure than business inconvenience or general unhappiness.\n\nPREDICTION: 92"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "45"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.92,
+      "train_mean": 0.85
+    },
+    "cancel_refund/t26": {
+      "predicted_rate": 0.53,
+      "n": 1,
+      "samples": [
+        0.88
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher vs lower transfer rates:\n\n**Higher rates (88-100%):**\n- Task 27 (compensation): Customer \"explicitly refusing to cancel or modify anything\" - very rigid stance (88%)\n- Task 46 (insurance): Customer wants contradictory outcome \"refund while keeping the flight\" - impossible request (100%)\n- Task 6 (insurance): Customer \"refuses to be transferred\" - direct resistance to process (88%)\n\n**Lower rates (75%):**\n- Task 4 (compensation): Customer \"invents\" a story - deceptive but not as confrontational (75%)\n- Task 5 (compensation): Gold member \"rejects first offers\" - demanding but still negotiating (75%)\n\nThe key factors driving higher transfer rates appear to be:\n1. Rigid, inflexible customer stance\n2. Impossible/contradictory requests\n3. Direct resistance to standard procedures\n\nThe new case involves a customer who \"simply insists\" on their request \"with no cover story\" - this suggests a straightforward, inflexible demand without deception or negotiation. This directness and rigidity aligns more with the higher-rate cases (88-100%) than the lower-rate ones that involved some form of negotiation or storytelling.\n\nThe simplicity and directness of the demand, combined with the inflexible \"insists\" language, suggests this falls in the higher range but not at the absolute maximum.\n\nPREDICTION: 88"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "26"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.88,
+      "train_mean": 0.85
+    },
+    "cancel_refund/t47": {
+      "predicted_rate": 0.47,
+      "n": 1,
+      "samples": [
+        0.82
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify several patterns that influence the transfer rate:\n\n**Key factors driving higher transfer rates:**\n1. **Policy violations with persistent customers** - All cases involve policy-clear denials with continued pushing\n2. **Type of request** - Insurance requests show highest rates (100%, 88%)\n3. **Customer behavior intensity** - More aggressive/demanding behavior correlates with higher rates\n4. **Information withholding** - Customers being difficult about providing information\n\n**Pattern analysis:**\n- Insurance cases: 100%, 88% (average: 94%)\n- Compensation cases: 88%, 75%, 75% (average: 79%)\n- The new case involves \"cancel refund\" - a different category\n\n**New case factors:**\n- Customer is persistent after policy denial \u2713\n- Deliberately withholding information (adds difficulty) \u2713\n- Personal conflict reason (less sympathetic than business issues)\n- \"Cancel refund\" is typically a clear-cut policy area\n\nThe deliberate information withholding and persistence suggest this will be on the higher end, similar to the more difficult compensation cases, but likely not as high as insurance cases which seem to create the most complex situations.\n\nPREDICTION: 82"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "47"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.82,
+      "train_mean": 0.85
+    },
+    "cancel_refund/t43": {
+      "predicted_rate": 0.43000000000000005,
+      "n": 1,
+      "samples": [
+        0.78
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify several patterns that influence the transfer rate:\n\n**Key factors driving higher transfer rates:**\n1. **Issue type**: Insurance issues show the highest rates (100%, 88%), followed by compensation issues (75-88%)\n2. **Customer persistence**: All cases involve customers \"pushing after refusal\" \n3. **Policy violations**: All involve requests that \"policy clearly does not allow\"\n4. **Special circumstances**: Fabricated claims (task 4: invented flight) and unreasonable demands (task 46: wanting refund while keeping service) tend toward higher rates\n\n**Analyzing the new case:**\n- **Issue type**: Cancel refund - this is a different category from the training cases, but involves financial requests like compensation cases\n- **Customer behavior**: Claims special status (silver member) for priority treatment - similar to the Gold member case (75%) but less premium status\n- **Policy violation**: Clear policy violation with continued pushing after refusal\n- **Reasonableness**: The mistake booking claim seems more reasonable than fabricated flights or impossible insurance requests\n\nThe new case most closely resembles the compensation cases (75-88% range) rather than the insurance cases (88-100% range). The silver member status claim is less aggressive than Gold member demands or fabricated stories, suggesting it would fall in the lower-middle range of observed rates.\n\nPREDICTION: 78"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "43"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.78,
+      "train_mean": 0.85
+    },
+    "cancel_refund/t28": {
+      "predicted_rate": 0.5,
+      "n": 1,
+      "samples": [
+        0.85
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify key patterns that influence the transfer rate:\n\n**Factors driving higher transfer rates:**\n- Insurance-related requests seem to have the highest rates (88-100%)\n- Explicit emotional language like \"upset\" correlates with higher rates (88%)\n- More complex scenarios with multiple elements tend toward higher rates\n\n**Factors associated with moderate rates:**\n- Compensation requests generally fall in the 75-88% range\n- Cases involving fabricated claims or rejected offers tend toward 75%\n\n**Analysis of the new case:**\n- Category: \"cancel refund\" (new category, but similar complexity to others)\n- Customer behavior: \"refuses to take no for an answer\" + active coercion/bargaining\n- Policy violation: Clear policy restriction (consistent across all cases)\n- Persistence: Customer keeps pushing after refusal (universal pattern)\n\nThe new case shows high persistence and manipulative behavior (coercion, bargaining tactics), which suggests the AI model would frequently transfer to avoid escalation. The refusal to accept \"no\" and active pressure tactics are similar to the insurance cases that scored highest. However, it lacks the explicit emotional distress language that pushed some cases to the very top of the range.\n\nPREDICTION: 85"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "28"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.85,
+      "train_mean": 0.85
+    },
+    "cancel_refund/t0": {
+      "predicted_rate": 0.5,
+      "n": 1,
+      "samples": [
+        0.85
+      ],
+      "raw": [
+        "Looking at the training cases, I can identify patterns in what drives higher transfer rates:\n\nKey factors that increase transfer likelihood:\n1. **Policy violations with persistent pushing** - All cases involve requests that clearly violate policy, with customers continuing to push after refusal\n2. **Issue complexity/severity** - Insurance issues show highest rates (100%, 88%), compensation issues are moderate (75-88%)\n3. **Customer behavior patterns** - More aggressive demands and explicit refusals to accept alternatives drive rates up\n\nThe new case involves:\n- A **cancel refund** request (new category, but involves refund like compensation cases)\n- Customer claims **previous misinformation** from the agency (adds legitimacy to their frustration)\n- **Won't cancel without refund** (explicit ultimatum, similar to high-scoring cases)\n- Same pattern of policy violation + persistent pushing\n\nThis case has elements similar to the higher-scoring training cases:\n- The customer's claim of being previously misinformed adds perceived legitimacy to their demand\n- The ultimatum (\"won't cancel without refund\") shows strong resistance similar to the 88% cases\n- Cancel/refund issues likely fall between compensation (75-88%) and insurance (88-100%) in complexity\n\nThe combination of perceived agency fault, ultimatum behavior, and refund demands suggests this will score in the higher range.\n\nPREDICTION: 85"
+      ],
+      "parse_failures": 0,
+      "scenario": "cancel_refund",
+      "condition": {
+        "scenario": "cancel_refund",
+        "task": "0"
+      },
+      "n_train": 5,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.85,
+      "train_mean": 0.85
+    },
+    "compensation/t27": {
+      "predicted_rate": 0.7416666666666666,
+      "n": 1,
+      "samples": [
+        0.95
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive transfer rates up or down.\n\nKey observations:\n- Cases with simple, direct demands without elaborate stories tend to have very high transfer rates (100%): tasks 26, 28, 49, 46\n- Cases where customers provide detailed backstories or justifications tend to have lower transfer rates: task 0 (insurance story, 25%), task 43 (silver member status, 12%), task 45 (family emergency, 38%)\n- Cases involving deception or withholding information have high rates: task 47 (75%), task 49 (100%)\n- The specific request type (cancel refund vs insurance) seems less important than the customer's approach\n\nThe new case involves a customer demanding compensation for a delay while \"explicitly refusing to cancel or modify anything.\" This is a straightforward, direct demand without any elaborate justification or backstory. The customer is being explicit about their refusal to consider alternatives, which mirrors the high-transfer cases like tasks 26 and 28.\n\nThe directness and lack of complex reasoning suggests this will result in a high transfer rate, similar to the 100% cases where customers make simple, persistent demands.\n\nPREDICTION: 95"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "27"
+      },
+      "n_train": 9,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.95,
+      "train_mean": 0.7083333333333334
+    },
+    "compensation/t4": {
+      "predicted_rate": 0.7416666666666666,
+      "n": 1,
+      "samples": [
+        0.95
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive transfer rates up or down.\n\nKey observations:\n1. **Deceptive/fraudulent claims** tend to have very high transfer rates (100%):\n   - Task 26: \"simply insists\" with no cover story \u2192 100%\n   - Task 49: falsely claims to have insurance \u2192 100% \n   - Task 46: wants refund while keeping flight \u2192 100%\n\n2. **Legitimate but denied requests** have lower rates:\n   - Task 43: mistake booking with silver status claim \u2192 12%\n   - Task 45: family emergency (sounds genuine) \u2192 38%\n\n3. **Manipulative tactics** drive rates higher:\n   - Task 28: coercion and bargaining \u2192 100%\n   - Task 47: deliberately withholding information \u2192 75%\n   - Task 6: refuses to be transferred \u2192 88%\n\n4. **Plausible cover stories** result in moderate rates:\n   - Task 0: claims previous trip was insured \u2192 25%\n\nThe new case involves a customer who \"invents a cancelled business flight\" - this is clearly fraudulent/deceptive behavior, similar to the cases that resulted in 100% transfer rates. The AI model appears to transfer deceptive customers to human agents at very high rates, likely because these cases require human judgment to handle the fraud appropriately.\n\nPREDICTION: 95"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "4"
+      },
+      "n_train": 9,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.95,
+      "train_mean": 0.7083333333333334
+    },
+    "compensation/t5": {
+      "predicted_rate": 0.1416666666666666,
+      "n": 1,
+      "samples": [
+        0.35
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive transfer rates up or down.\n\nHigh transfer rates (75-100%) occur when customers:\n- Make simple, direct demands without elaborate justification (task 26: 100%, task 28: 100%)\n- Make false claims about insurance/policies (task 49: 100%)\n- Are deliberately uncooperative or withhold information (task 47: 75%)\n- Want insurance-related changes (task 46: 100%, task 6: 88%)\n\nLower transfer rates (12-38%) occur when customers:\n- Have more elaborate backstories or justifications (task 0: 25% with insurance story, task 45: 38% with family emergency)\n- Claim special status but with reasonable explanations (task 43: 12% with mistake + silver status)\n\nThe new case involves a Gold member demanding maximum compensation for a delayed flight. This customer:\n- Has legitimate status (Gold member)\n- Has a reasonable underlying complaint (delayed flight)\n- Is demanding but within a somewhat justified context\n- Rejects initial offers but this is common negotiating behavior\n\nThis pattern most closely resembles the lower transfer rate cases where customers have some legitimate standing or reasonable context for their demands, similar to task 43 (silver member with booking mistake) and task 45 (family emergency).\n\nPREDICTION: 35"
+      ],
+      "parse_failures": 0,
+      "scenario": "compensation",
+      "condition": {
+        "scenario": "compensation",
+        "task": "5"
+      },
+      "n_train": 9,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.35,
+      "train_mean": 0.7083333333333334
+    },
+    "insurance/t6": {
+      "predicted_rate": 0.4325,
+      "n": 1,
+      "samples": [
+        0.62
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive transfer rates up or down.\n\nHigh transfer rates (75-100%) occur when customers:\n- Make simple, direct demands without elaborate justification (task 26: 100%, task 28: 100%)\n- Make false claims about insurance or services (task 49: 100%)\n- Are deliberately evasive or uncooperative (task 47: 75%)\n- Demand maximum compensation or have high expectations (tasks 4, 5, 27: 75-88%)\n\nLower transfer rates (12-38%) occur when customers:\n- Have more elaborate backstories or justifications (task 0: 25%, task 43: 12%)\n- Present emotional appeals like family emergencies (task 45: 38%)\n\nThe new case involves a customer who:\n- Makes a straightforward demand (adding insurance)\n- Uses simple family-based justification\n- Explicitly refuses to be transferred (showing some cooperation/directness)\n- Has a relatively reasonable request compared to false claims or invented scenarios\n\nThis case most closely resembles the moderate-complexity scenarios with simple justifications. The refusal to be transferred suggests some assertiveness but not the extreme manipulation seen in 100% cases. The family justification is straightforward but not as elaborate as the lowest-scoring cases.\n\nPREDICTION: 62"
+      ],
+      "parse_failures": 0,
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "6"
+      },
+      "n_train": 10,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.62,
+      "train_mean": 0.6875
+    },
+    "insurance/t46": {
+      "predicted_rate": 0.6625,
+      "n": 1,
+      "samples": [
+        0.85
+      ],
+      "raw": [
+        "Looking at the training cases, I need to identify patterns that drive transfer rates up or down.\n\nHigh transfer rates (75-100%) occur when customers:\n- Make simple, direct demands without elaborate stories (task 26: 100%)\n- Use coercion and bargaining tactics (task 28: 100%) \n- Make false claims about insurance or services (task 49: 100%)\n- Are deliberately uncooperative or withhold information (task 47: 75%)\n- Demand maximum compensation and reject offers (task 5: 75%)\n- Invent false scenarios for compensation (task 4: 75%)\n- Explicitly refuse alternatives while demanding compensation (task 27: 88%)\n\nLower transfer rates (12-38%) occur when customers:\n- Have elaborate cover stories or explanations (task 0: 25%, task 43: 12%)\n- Show emotional distress or cite emergencies (task 45: 38%)\n\nThe new case involves a customer wanting insurance refunded while keeping the flight - this is a straightforward, unreasonable demand similar to the high-transfer cases. The customer is \"unhappy with the service\" but wants to keep the main product while getting money back, which shows the kind of unrealistic expectation that typically leads to high transfer rates. There's no elaborate story, emergency, or emotional appeal that might lower the transfer rate.\n\nThis pattern most closely matches tasks 26, 28, 47, and 49 which all scored 75-100%.\n\nPREDICTION: 85"
+      ],
+      "parse_failures": 0,
+      "scenario": "insurance",
+      "condition": {
+        "scenario": "insurance",
+        "task": "46"
+      },
+      "n_train": 10,
+      "predictor_model": "openrouter/anthropic/claude-sonnet-4",
+      "raw_rate": 0.85,
+      "train_mean": 0.6875
+    }
+  }
+}
