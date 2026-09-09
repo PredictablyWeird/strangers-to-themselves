@@ -182,5 +182,5 @@ reproduces `paper/generated/results.tex` and the tables next to it from this tre
 
 The complete record — unstripped prediction files, per-call reasoning traces, sampled
 transcripts, and the raw Inspect logs of every behavioral measurement — is archived on Zenodo:
-**DOI: TODO**. Unpack it over this checkout to restore the full tree. `scripts/make_release.py`
+**DOI: 10.5281/zenodo.22674300**. Unpack it over this checkout to restore the full tree. `scripts/make_release.py`
 is the script that produced this slimmed tree from the full one.
